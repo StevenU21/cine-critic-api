@@ -66,6 +66,9 @@ CineCritic API es una API RESTful para gestionar una plataforma de reseñas de p
 1. Clona el repositorio:
    ```bash
    git clone  https://github.com/StevenU21/CineCritic-API.git
+   ```
+
+  ```bash
    cd CineCritic-API
    ```
 
