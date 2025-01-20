@@ -14,4 +14,9 @@ class GenreController extends Controller
         $genres = Genre::latest()->paginate(10);
         return GenreResource::collection($genres);
     }
+
+    public function show(Genre $genre): GenreResource
+    {
+        return new GenreResource($genre);
+    }
 }
