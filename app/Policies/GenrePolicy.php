@@ -4,9 +4,13 @@ namespace App\Policies;
 
 use App\Models\Genre;
 use App\Models\User;
+use App\Exceptions\AuthorizationException;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GenrePolicy
 {
+    use HandlesAuthorization;
+
     public function before(User $user, $ability)
     {
         if ($user->hasRole('admin')) {
@@ -18,6 +22,9 @@ class GenrePolicy
      */
     public function viewAny(User $user): bool
     {
+        if (!$user->hasPermissionTo('view genres')) {
+            throw new AuthorizationException();
+        }
         return true;
     }
 
@@ -26,7 +33,10 @@ class GenrePolicy
      */
     public function view(User $user, Genre $genre): bool
     {
-        return false;
+        if (!$user->hasPermissionTo('view genres')) {
+            throw new AuthorizationException();
+        }
+        return true;
     }
 
     /**
@@ -34,7 +44,10 @@ class GenrePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        if (!$user->hasPermissionTo('create genres')){
+            throw new AuthorizationException();
+        }
+        return true;
     }
 
     /**
@@ -42,7 +55,8 @@ class GenrePolicy
      */
     public function update(User $user, Genre $genre): bool
     {
-        return false;
+        if (!$user->hasAllPermissions('update genres')){}
+        return true;
     }
 
     /**

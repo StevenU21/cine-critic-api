@@ -15,9 +15,9 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         // Create permissions
         $permissions = [
-            'create genre', 'read genre', 'update genre', 'delete genre',
-            'create user', 'read user', 'update user', 'delete user',
-            'assign role', 'unassign role', 'assign permission', 'unassign permission',
+            'create genres', 'read genres', 'update genres', 'delete genres',
+            'create users', 'read users', 'update users', 'delete users',
+            'assign roles', 'unassign roles', 'assign permissions', 'unassign permissions',
         ];
 
         // Save permissions to database
@@ -34,8 +34,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminRole->givePermissionTo($permissions);
 
         $moderatorRole->givePermissionTo([
-            'create genre', 'read genre', 'update genre', 'delete genre',
-            'create user', 'read user', 'update user', 'delete user',
+            'create genres', 'read genres', 'update genres', 'delete genres',
+            'read users', 'update users', 'delete users',
         ]);
 
         $reviewerRole->givePermissionTo([
