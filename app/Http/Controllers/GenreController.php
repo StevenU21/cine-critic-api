@@ -15,8 +15,10 @@ class GenreController extends Controller
         return GenreResource::collection($genres);
     }
 
-    public function show(Genre $genre): GenreResource
+    public function show(string $slug): GenreResource
     {
+        $genre = Genre::findOrFailCustom($slug);
+
         return new GenreResource($genre);
     }
 }

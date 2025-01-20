@@ -15,7 +15,7 @@ class GenreResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'slug' => $this->when($request->has('include_slug'), $this->slug),
+            'id' => $this->when($request->has('include_id'), $this->id),
             'name' => $this->name,
             'description' => $this->description,
             'created_at' => $this->when($request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
