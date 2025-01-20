@@ -4,7 +4,6 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\NotFoundException;
 
-
 trait FindModelOrFail
 {
     public static function findOrFailCustom($id): Model
