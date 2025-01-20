@@ -22,7 +22,7 @@ class GenrePolicy
      */
     public function viewAny(User $user): bool
     {
-        if (!$user->hasPermissionTo('view genres')) {
+        if (!$user->hasPermissionTo('read genres')) {
             throw new AuthorizationException();
         }
         return true;
@@ -33,7 +33,7 @@ class GenrePolicy
      */
     public function view(User $user, Genre $genre): bool
     {
-        if (!$user->hasPermissionTo('view genres')) {
+        if (!$user->hasPermissionTo('read genres')) {
             throw new AuthorizationException();
         }
         return true;
@@ -44,7 +44,7 @@ class GenrePolicy
      */
     public function create(User $user): bool
     {
-        if (!$user->hasPermissionTo('create genres')){
+        if (!$user->hasPermissionTo('create genres')) {
             throw new AuthorizationException();
         }
         return true;
@@ -55,7 +55,9 @@ class GenrePolicy
      */
     public function update(User $user, Genre $genre): bool
     {
-        if (!$user->hasAllPermissions('update genres')){}
+        if (!$user->hasAllPermissions('update genres')) {
+            throw new AuthorizationException();
+        }
         return true;
     }
 
@@ -64,6 +66,9 @@ class GenrePolicy
      */
     public function delete(User $user, Genre $genre): bool
     {
-        return false;
+        if (!$user->hasPermissionTo('delete genres')) {
+            throw new AuthorizationException();
+        }
+        return true;
     }
 }

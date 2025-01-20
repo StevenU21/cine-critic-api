@@ -13,6 +13,7 @@ class GenreController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', Genre::class);
         $genres = Genre::latest()->paginate(10);
         return GenreResource::collection($genres);
     }
@@ -20,6 +21,7 @@ class GenreController extends Controller
     public function show(int $id): GenreResource
     {
         $genre = Genre::findOrFailCustom($id);
+        $this->authorize('view', $genre);
 
         return new GenreResource($genre);
     }
