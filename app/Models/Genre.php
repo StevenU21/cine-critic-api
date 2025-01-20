@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\FindModelOrFail;
+use App\Traits\FindModelOrFail;
 
 class Genre extends Model
 {
