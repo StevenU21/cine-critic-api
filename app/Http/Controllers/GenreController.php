@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Genre;
-use App\Http\Requests\StoreGenreRequest;
-use App\Http\Requests\UpdateGenreRequest;
+use App\Http\Requests\GenreRequest;
 
 class GenreController extends Controller
 {

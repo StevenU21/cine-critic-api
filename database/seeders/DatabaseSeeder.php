@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Genre;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,5 +20,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
         ]);
+
+        Genre::factory(10)->create();
     }
 }
