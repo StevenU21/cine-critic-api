@@ -39,7 +39,7 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         $reviewerRole->givePermissionTo([
-            'read genre', 'read user',
+            'read genres', 'read users',
         ]);
     }
 }
