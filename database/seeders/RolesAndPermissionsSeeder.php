@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -12,9 +13,22 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'create genre', 'read genre', 'update genre', 'delete genre',
-            'create user', 'read user', 'update user', 'delete user',
-            'assign role', 'unassign role', 'assign permission', 'unassign permission',
+            'create genre',
+            'read genre',
+            'update genre',
+            'delete genre',
+            'create user',
+            'read user',
+            'update user',
+            'delete user',
+            'assign role',
+            'unassign role',
+            'assign permission',
+            'unassign permission',
         ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
     }
 }
