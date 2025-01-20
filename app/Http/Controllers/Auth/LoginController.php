@@ -15,7 +15,7 @@ class LoginController extends Controller
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => __('Contraseña incorrecta.'),
+                'message' => 'The provided password is incorrect.'
             ], 401);
         }
 
