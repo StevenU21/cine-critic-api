@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 
-class LoginController extends TestCase
+class LoginControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -34,4 +34,24 @@ class LoginController extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['email', 'password']);
     }
+
+    public function test_user_can_logout()
+    {
+        $user = User::factory()->create();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")
+            ->postJson(route('logout'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_user_can_logout_only_when_authenticated()
+    {
+        $response = $this->postJson(route('logout'));
+
+        $response->assertStatus(401);
+    }
+
 }
