@@ -9,4 +9,15 @@ class Genre extends Model
 {
     /** @use HasFactory<\Database\Factories\GenreFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'slug'
+    ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }
