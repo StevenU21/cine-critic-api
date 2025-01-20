@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -12,6 +11,10 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $permissions = [
+            'create genre', 'read genre', 'update genre', 'delete genre',
+            'create user', 'read user', 'update user', 'delete user',
+            'assign role', 'unassign role', 'assign permission', 'unassign permission',
+        ];
     }
 }
