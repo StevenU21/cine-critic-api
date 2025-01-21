@@ -10,6 +10,7 @@ CineCritic API es una API RESTful para gestionar una plataforma de reseñas de p
 - Registro de usuarios con avatar opcional.
 - Inicio de sesión y cierre de sesión con tokens (Laravel Sanctum).
 - Recuperación de contraseña por correo electrónico.
+- Roles de usuario: admin, moderator y reviewer.
 
 ### 🎥 **Gestor de películas**
 - CRUD para películas con información como:
@@ -50,6 +51,7 @@ CineCritic API es una API RESTful para gestionar una plataforma de reseñas de p
 - **MySQL**: Base de datos relacional.
 - **Broadcasting**: Para notificaciones en tiempo real.
 - **Postman**: Pruebas de la API.
+- **Laravel Telescope**: Herramienta de depuración para el entorno local.
 
 ---
 
@@ -101,14 +103,23 @@ CineCritic API es una API RESTful para gestionar una plataforma de reseñas de p
    ```bash
    php artisan serve
    ```
+
 8. Ejecuta los tests:
    ```bash
    php artisan test
    ```
 
+9. Accede a Laravel Telescope en el entorno local:
+   ```bash
+   php artisan telescope:install
+   php artisan migrate
+   ```
+   Luego, visita [http://localhost:8000/telescope](http://localhost:8000/telescope).
+
 ## 🌐 Recursos Adicionales
-- [Laravel Sanctum Documentation](https://laravel.com/docs/10.x/sanctum)
-- [Laravel Broadcasting](https://laravel.com/docs/10.x/broadcasting)
+- [Laravel Sanctum Documentation](https://laravel.com/docs/11.x/sanctum)
+- [Laravel Broadcasting](https://laravel.com/docs/11.x/broadcasting)
 - [Postman](https://www.postman.com/)
+- [Laravel Telescope](https://laravel.com/docs/11.x/telescope)
 
 ---
