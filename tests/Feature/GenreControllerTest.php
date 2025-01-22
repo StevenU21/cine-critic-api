@@ -91,5 +91,37 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    
+    public function test_user_can_update_genre()
+    {
+        $genre = Genre::factory()->create();
+
+        $user = User::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/genres/$genre->id", [
+            'name' => 'Fantasy',
+            'description' => 'The best genre ever',
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_user_without_update_permission_cannot_update_genre()
+    {
+        $genre = Genre::factory()->create();
+
+        $user = User::factory()->create();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/genres/$genre->id", [
+            'name' => 'Fantasy',
+            'description' => 'The best genre ever',
+        ]);
+
+        $response->assertStatus(403);
+    }
 }
