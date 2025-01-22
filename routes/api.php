@@ -27,11 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
 
     // Admin routes
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/roles', [RoleController::class, 'index']);
-        Route::put('/roles/{user}/assign-role', [RoleController::class, 'assignRole']);
-        Route::get('/roles/permissions', [PermissionController::class, 'index']);
-        Route::post('/roles/permissions/{user}/give-permission', [PermissionController::class, 'givePermission']);
-        Route::delete('/roles/permissions/{user}/revoke-permission', [PermissionController::class, 'revokePermission']);
+    Route::middleware('role:admin')->prefix('/roles')->group(function () {
+        Route::get('', [RoleController::class, 'index']);
+        Route::put('/{user}/assign-role', [RoleController::class, 'assignRole']);
+        Route::get('/permissions', [PermissionController::class, 'index']);
+        Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'givePermission']);
+        Route::delete('/permissions/{user}/revoke-permission', [PermissionController::class, 'revokePermission']);
     });
 });
