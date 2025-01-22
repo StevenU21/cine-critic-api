@@ -29,6 +29,22 @@ class RegisterControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_registered_user_has_reviewer_role()
+    {
+        $response = $this->postJson(route('register'), [
+            'name' => 'John Doe',
+            'email' => 'test@gmail.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $user = User::where('email', 'test@gmail.com')->first();
+
+        $this->assertTrue($user->hasRole('reviewer'));
+
+        $response->assertStatus(200);
+    }
+
     public function test_registration_requires_name_email_and_password()
     {
         $response = $this->postJson(route('register'), []);
