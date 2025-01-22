@@ -24,7 +24,7 @@ class GenreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:6', 'max:30', Rule::unique('genres')->ignore($this->genre)],
-            'description' => ['nullable', 'string', 'max:255'],
+            'description' => ['required', 'string', 'min:6', 'max:255'],
         ];
     }
 
@@ -41,6 +41,8 @@ class GenreRequest extends FormRequest
             'name.min' => 'The name field must be at least :min characters.',
             'name.max' => 'The name field may not be greater than :max characters.',
             'name.unique' => 'The name field already exists.',
+            'description.required' => 'The description field is required.',
+            'description.min' => 'The description field must be at least :min characters.',
             'description.string' => 'The description field must be a string.',
             'description.max' => 'The description field may not be greater than :max characters.',
         ];
