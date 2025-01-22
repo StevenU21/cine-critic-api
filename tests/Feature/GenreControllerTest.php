@@ -18,7 +18,7 @@ class GenreControllerTest extends TestCase
         $this->seed(RolesAndPermissionsSeeder::class);
     }
 
-    public function test_user_can_view_genre_list()
+    public function test_admin_user_can_view_genre_list()
     {
         Genre::factory(10)->create();
 
@@ -33,7 +33,7 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_user_can_show_specify_genre()
+    public function test_admin_user_can_show_specify_genre()
     {
         $genre = Genre::factory()->create();
 
@@ -61,7 +61,7 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_user_can_create_genre()
+    public function test_admin_user_can_create_genre()
     {
         $user = User::factory()->create();
 
@@ -91,7 +91,7 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_user_can_update_genre()
+    public function test_admin_user_can_update_genre()
     {
         $genre = Genre::factory()->create();
 
@@ -125,7 +125,7 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_user_can_delete_genre()
+    public function test_admin_user_can_delete_genre()
     {
         $genre = Genre::factory()->create();
 
@@ -153,5 +153,5 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    
+
 }
