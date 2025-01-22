@@ -32,6 +32,12 @@ class RoleController extends Controller
 
         $role = $request->input('role');
 
+        if (is_array($role)) {
+            return response()->json([
+                'message' => 'Only one role can be assigned at a time',
+            ], 400);
+        }
+
         $user->syncRoles($role);
 
         return response()->json([
