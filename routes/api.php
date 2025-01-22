@@ -16,6 +16,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+    // Genre routes
     Route::put('/genres/{genre}', [GenreController::class, 'update'])->name('genres.update');
     Route::apiResource('/genres', GenreController::class)->except('update');
 });
