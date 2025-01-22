@@ -240,11 +240,13 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_user_without_delete_permission_cannot_delete_genre()
+    public function test_reviewer_user_cant_delete_genre()
     {
         $genre = Genre::factory()->create();
 
         $user = User::factory()->create();
+
+        $user->assignRole('reviewer');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -252,5 +254,4 @@ class GenreControllerTest extends TestCase
 
         $response->assertStatus(403);
     }
-
 }
