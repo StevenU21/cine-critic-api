@@ -174,7 +174,7 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-        public function test_moderator_user_cant_update_genre()
+    public function test_moderator_user_cant_update_genre()
     {
         $genre = Genre::factory()->create();
 
