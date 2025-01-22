@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
-    public function list(): AnonymousResourceCollection
+    public function index(): AnonymousResourceCollection
     {
         $users = User::with('roles')->latest()->paginate(10);
 

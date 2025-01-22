@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
-    public function list(): JsonResponse
+    public function index(): JsonResponse
     {
         $permissions = Permission::pluck('name', 'id');
 
