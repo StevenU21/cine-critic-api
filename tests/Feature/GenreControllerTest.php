@@ -225,6 +225,21 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_moderator_user_cant_delete_genre()
+    {
+        $genre = Genre::factory()->create();
+
+        $user = User::factory()->create();
+
+        $user->assignRole('moderator');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/genres/$genre->id");
+
+        $response->assertStatus(403);
+    }
+
     public function test_user_without_delete_permission_cannot_delete_genre()
     {
         $genre = Genre::factory()->create();
@@ -237,6 +252,5 @@ class GenreControllerTest extends TestCase
 
         $response->assertStatus(403);
     }
-
 
 }
