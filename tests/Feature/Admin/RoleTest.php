@@ -81,12 +81,12 @@ class RoleTest extends TestCase
 
     public function test_admin_can_assign_existing_role_to_user()
     {
-        // Crear un usuario admin
+        // create an admin user
         $admin = User::factory()->create();
         $admin->assignRole('admin');
         $token = $admin->createToken('auth_token')->plainTextToken;
 
-        // Crear un usuario al que se le asignará un nuevo rol
+        // create a user
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
