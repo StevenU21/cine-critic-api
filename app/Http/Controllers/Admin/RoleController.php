@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index(): JsonResponse
     {
+        $this->authorize('viewAny', Role::class);
+
         $roles = Role::pluck('name', 'id');
 
         return response()->json($roles);
@@ -19,14 +24,20 @@ class RoleController extends Controller
 
     public function assignRole(Request $request, User $user): JsonResponse
     {
-        $role = Role::findOrFailCustom($request->input('role'));
+        $this->authorize('assignRole', Role::class);
 
-        // Remove all current roles
-        $user->roles()->detach();
+        $request->validate([
+            'role' => 'required|exists:roles,name',
+        ]);
 
-        // Assign the new role
-        $user->assignRole($role);
+        $role = $request->input('role');
 
-        return response()->json(['message' => 'Role updated successfully']);
+        $user->syncRoles($role);
+
+        return response()->json([
+            'message' => 'Role assigned successfully',
+            'user' => $user,
+            'role' => $role,
+        ]);
     }
 }
