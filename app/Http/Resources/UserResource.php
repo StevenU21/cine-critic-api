@@ -20,8 +20,8 @@ class UserResource extends JsonResource
             'id' => $this->when($user && $user->hasRole('admin') && $request->has('include_id'), $this->id),
             'name' => $this->name,
             'email' => $this->email,
-            'role' => $this->whenLoaded('roles', function () {
-                return $this->roles->first()->name; 
+            'role' => $this->when($user && $user->hasRole('admin') || $user->hasRole('moderator'), function () {
+                return $this->roles->first()->name;
             }),
             'created_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
         ];
