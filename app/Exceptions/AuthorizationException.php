@@ -6,6 +6,8 @@ use Exception;
 
 class AuthorizationException extends Exception
 {
+    protected $message;
+    
     public function __construct($message = "You are not authorized to access this resource")
     {
         parent::__construct($message);
