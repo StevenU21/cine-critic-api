@@ -76,4 +76,20 @@ class GenreControllerTest extends TestCase
 
         $response->assertStatus(201);
     }
+
+    public function test_user_without_create_permission_cannot_create_genre()
+    {
+        $user = User::factory()->create();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/genres', [
+            'name' => 'Fantasy',
+            'description' => 'The best genre ever',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    
 }
