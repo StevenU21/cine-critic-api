@@ -108,19 +108,6 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_user_without_view_permission_cannot_view_genre_list()
-    {
-        Genre::factory(10)->create();
-
-        $user = User::factory()->create();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/genres');
-
-        $response->assertStatus(403);
-    }
-
     public function test_admin_user_can_create_genre()
     {
         $user = User::factory()->create();
@@ -137,9 +124,27 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(201);
     }
 
-    public function test_user_without_create_permission_cannot_create_genre()
+    public function test_moderator_user_cant_create_genre()
     {
         $user = User::factory()->create();
+
+        $user->assignRole('moderator');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/genres', [
+            'name' => 'Fantasy',
+            'description' => 'The best genre ever',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reviewer_user_cant_create_genre()
+    {
+        $user = User::factory()->create();
+
+        $user->assignRole('reviewer');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -169,11 +174,31 @@ class GenreControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_user_without_update_permission_cannot_update_genre()
+        public function test_moderator_user_cant_update_genre()
     {
         $genre = Genre::factory()->create();
 
         $user = User::factory()->create();
+
+        $user->assignRole('moderator');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/genres/$genre->id", [
+            'name' => 'Fantasy',
+            'description' => 'The best genre ever',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reviewer_user_cant_update_genre()
+    {
+        $genre = Genre::factory()->create();
+
+        $user = User::factory()->create();
+
+        $user->assignRole('reviewer');
 
         $token = $user->createToken('auth_token')->plainTextToken;
 

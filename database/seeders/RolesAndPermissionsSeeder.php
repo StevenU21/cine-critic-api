@@ -34,7 +34,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminRole->givePermissionTo($permissions);
 
         $moderatorRole->givePermissionTo([
-            'create genres', 'read genres', 'update genres', 'delete genres',
+            'read genres',
             'read users', 'update users', 'delete users',
         ]);
 
