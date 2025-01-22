@@ -27,6 +27,8 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('reviewer');
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
