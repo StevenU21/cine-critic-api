@@ -14,11 +14,13 @@ class GenreResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = $request->user();
+
         return [
-            'id' => $this->when($request->has('include_id'), $this->id),
+            'id' => $this->when($user && $user->hasRole('admin') && $request->has('include_id'), $this->id),
             'name' => $this->name,
             'description' => $this->description,
-            'created_at' => $this->when($request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
+            'created_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
         ];
     }
 }

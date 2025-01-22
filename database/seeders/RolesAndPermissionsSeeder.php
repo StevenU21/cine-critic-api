@@ -17,7 +17,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = [
             'create genres', 'read genres', 'update genres', 'delete genres',
             'create users', 'read users', 'update users', 'delete users',
-            'assign roles', 'unassign roles', 'assign permissions', 'unassign permissions',
+            'assign roles', 'assign permissions', 'revoke permissions',
         ];
 
         // Save permissions to database
