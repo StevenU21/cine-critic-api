@@ -24,16 +24,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/genres', GenreController::class)->except('update');
 
     // User routes
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
     // Admin routes
-    Route::middleware('role:admin')->prefix('/roles')->group(function () {
-        Route::get('', [RoleController::class, 'index']);
-        Route::put('/{user}/assign-role', [RoleController::class, 'assignRole']);
-        Route::get('/permissions', [PermissionController::class, 'index']);
-        Route::get('/permissions/{user}/list-permission', [PermissionController::class, 'getUserPermissions']);
-        Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'assignPermission']);
-        Route::delete('/permissions/{user}/revoke-permission', [PermissionController::class, 'revokePermission']);
+    Route::middleware('role:admin')->prefix('/roles')->name('roles.')->group(function () {
+        Route::get('', [RoleController::class, 'index'])->name('index');
+        Route::put('/{user}/assign-role', [RoleController::class, 'assignRole'])->name('assign-role');
+        Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+        Route::get('/permissions/{user}/list-permission', [PermissionController::class, 'getUserPermissions'])->name('permissions.list-permission');
+        Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'assignPermission'])->name('permissions.give-permission');
+        Route::delete('/permissions/{user}/revoke-permission', [PermissionController::class, 'revokePermission'])->name('permissions.revoke-permission');
     });
 });
