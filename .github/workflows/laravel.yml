@@ -33,3 +33,7 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test
+
+    - name: Post-job cleanup
+      if: failure()
+      run: echo "Post-job cleanup encountered an error but continuing..."
