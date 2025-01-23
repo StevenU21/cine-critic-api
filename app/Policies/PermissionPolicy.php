@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Exceptions\AuthorizationException;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-
 class PermissionPolicy
 {
     use HandlesAuthorization;
@@ -15,5 +14,37 @@ class PermissionPolicy
         if ($user->hasRole('admin')) {
             return true;
         }
+    }
+
+    public function viewAny(User $user): bool
+    {
+        if (!$user->hasPermissionTo('read permissions')) {
+            throw new AuthorizationException();
+        }
+        return true;
+    }
+
+    public function view(User $user): bool
+    {
+        if (!$user->hasPermissionTo('read permissions')) {
+            throw new AuthorizationException();
+        }
+        return true;
+    }
+
+    public function assignPermissions(User $user): bool
+    {
+        if (!$user->hasPermissionTo('assign permissions')) {
+            throw new AuthorizationException();
+        }
+        return true;
+    }
+
+    public function revokePermissions(User $user): bool
+    {
+        if (!$user->hasPermissionTo('revoke permissions')) {
+            throw new AuthorizationException();
+        }
+        return true;
     }
 }
