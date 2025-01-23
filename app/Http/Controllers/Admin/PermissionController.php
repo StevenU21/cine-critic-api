@@ -36,7 +36,12 @@ class PermissionController extends Controller
         // Assign the new permissions
         $user->givePermissionTo($permissions);
 
-        return response()->json(['message' => 'Permissions granted successfully']);
+        return response()->json(
+            [
+                'message' => 'Permissions granted successfully',
+                'permissions' => $permissions,
+            ]
+        );
     }
 
     public function revokePermission(Request $request, User $user): JsonResponse
