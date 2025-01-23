@@ -16,7 +16,7 @@ class PermissionController extends Controller
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', Permission::class);
-        
+
         $permissions = Permission::pluck('name', 'id');
 
         return response()->json($permissions);
@@ -49,10 +49,36 @@ class PermissionController extends Controller
         ]);
 
         $permissions = $request->input('permission');
+        $revokedPermissions = [];
+        $rolePermissions = [];
 
-        // Revoke the permissions
-        $user->revokePermissionTo($permissions);
+        foreach ($permissions as $permission) {
+            if ($user->hasDirectPermission($permission)) {
+                $user->revokePermissionTo($permission);
+                $revokedPermissions[] = $permission;
+            } else {
+                $rolePermissions[] = $permission;
+            }
+        }
 
-        return response()->json(['message' => 'Permissions revoked successfully']);
+        $message = 'Permissions revoked successfully';
+        if (!empty($rolePermissions)) {
+            $message .= '. The following permissions are inherited from roles and cannot be revoked: ' . implode(', ', $rolePermissions);
+        }
+
+        return response()->json(['message' => $message, 'revoked_permissions' => $revokedPermissions]);
+    }
+
+    public function getUserPermissions(User $user): JsonResponse
+    {
+        $this->authorize('view', $user);
+
+        $directPermissions = $user->getDirectPermissions()->pluck('name');
+        $rolePermissions = $user->getPermissionsViaRoles()->pluck('name');
+
+        return response()->json([
+            'direct_permissions' => $directPermissions,
+            'role_permissions' => $rolePermissions,
+        ]);
     }
 }
