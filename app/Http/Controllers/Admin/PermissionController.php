@@ -16,6 +16,7 @@ class PermissionController extends Controller
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', Permission::class);
+        
         $permissions = Permission::pluck('name', 'id');
 
         return response()->json($permissions);

@@ -14,12 +14,16 @@ class UserController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', User::class);
+
         $users = User::with(['roles.permissions'])->latest()->paginate(10);
 
         return UserResource::collection($users);
     }
     public function show(User $user): UserResource
     {
+        $this->authorize('view', $user);
+        
         $user->load(['roles.permissions']);
 
         return new UserResource($user);
