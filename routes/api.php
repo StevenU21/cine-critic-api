@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('', [RoleController::class, 'index']);
         Route::put('/{user}/assign-role', [RoleController::class, 'assignRole']);
         Route::get('/permissions', [PermissionController::class, 'index']);
-        Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'givePermission']);
+        Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'assignPermission']);
         Route::delete('/permissions/{user}/revoke-permission', [PermissionController::class, 'revokePermission']);
     });
 });
