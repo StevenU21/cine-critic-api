@@ -26,15 +26,16 @@ class PermissionController extends Controller
         $this->authorize('assignPermissions', Permission::class);
 
         $request->validate([
-            'permission' => 'required|exists:permissions,name',
+            'permission' => 'required|array',
+            'permission.*' => 'exists:permissions,name',
         ]);
 
-        $permission = $request->input('permission');
+        $permissions = $request->input('permission');
 
         // Assign the new permissions
-        $user->givePermissionTo($permission);
+        $user->givePermissionTo($permissions);
 
-        return response()->json(['message' => 'Permission granted successfully']);
+        return response()->json(['message' => 'Permissions granted successfully']);
     }
 
     public function revokePermission(Request $request, User $user): JsonResponse
@@ -42,14 +43,15 @@ class PermissionController extends Controller
         $this->authorize('revokePermissions', Permission::class);
 
         $request->validate([
-            'permission' => 'required|exists:permissions,name',
+            'permission' => 'required|array',
+            'permission.*' => 'exists:permissions,name',
         ]);
 
-        $permission = $request->input('permission');
+        $permissions = $request->input('permission');
 
         // Revoke the permissions
-        $user->revokePermissionTo($permission);
+        $user->revokePermissionTo($permissions);
 
-        return response()->json(['message' => 'Permission revoked successfully']);
+        return response()->json(['message' => 'Permissions revoked successfully']);
     }
 }
