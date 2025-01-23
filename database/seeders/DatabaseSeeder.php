@@ -37,6 +37,13 @@ class DatabaseSeeder extends Seeder
         ]);
         $ReviewerUser->assignRole('reviewer');
 
+        User::factory(1000)->create();
+
+        foreach (User::all() as $user) {
+            $role = ['reviewer', 'moderator'][array_rand(['reviewer', 'moderator'])];
+            $user->assignRole($role);
+        }
+
         Genre::factory(100)->create();
     }
 }
