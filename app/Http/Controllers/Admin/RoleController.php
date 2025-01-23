@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Spatie\Permission\Models\Role;
@@ -42,7 +43,7 @@ class RoleController extends Controller
 
         return response()->json([
             'message' => 'Role assigned successfully',
-            'user' => $user,
+            'user' => new UserResource($user),
             'role' => $role,
         ]);
     }
