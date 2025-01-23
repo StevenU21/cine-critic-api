@@ -20,7 +20,7 @@ class UserPolicy
 
     public function viewAny(User $user): bool
     {
-        if (!$user->hasPermissionTo('view users')) {
+        if (!$user->hasPermissionTo('read users')) {
             throw new AuthorizationException();
         }
         return true;
@@ -28,7 +28,7 @@ class UserPolicy
 
     public function view(User $user): bool
     {
-        if (!$user->hasPermissionTo('view users')) {
+        if (!$user->hasPermissionTo('read users')) {
             throw new AuthorizationException();
         }
         return true;
