@@ -23,7 +23,7 @@ class UserController extends Controller
     public function show(User $user): UserResource
     {
         $this->authorize('view', $user);
-        
+
         $user->load(['roles.permissions']);
 
         return new UserResource($user);
