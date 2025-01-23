@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // User routes
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
 
     // Admin routes
     Route::middleware('role:admin')->prefix('/roles')->group(function () {

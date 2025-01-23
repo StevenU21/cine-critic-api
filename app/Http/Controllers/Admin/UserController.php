@@ -15,4 +15,10 @@ class UserController extends Controller
 
         return UserResource::collection($users);
     }
+
+    public function show(User $user): UserResource
+    {
+        $user->load('roles');
+        return new UserResource($user);
+    }
 }
