@@ -25,7 +25,11 @@ class PermissionController extends Controller
     {
         $this->authorize('assignPermissions', Permission::class);
 
-        $permission = Permission::findOrFailCustom($request->input('permission'));
+        $request->validate([
+            'permission' => 'required|exists:permissions,name',
+        ]);
+
+        $permission = $request->input('permission');
 
         // Assign the new permissions
         $user->givePermissionTo($permission);
@@ -37,7 +41,11 @@ class PermissionController extends Controller
     {
         $this->authorize('revokePermissions', Permission::class);
 
-        $permission = Permission::findOrFailCustom($request->input('permission'));
+        $request->validate([
+            'permission' => 'required|exists:permissions,name',
+        ]);
+
+        $permission = $request->input('permission');
 
         // Revoke the permissions
         $user->revokePermissionTo($permission);
