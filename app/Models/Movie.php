@@ -16,7 +16,6 @@ class Movie extends Model
         'description',
         'cover_image',
         'release_date',
-        'rating',
         'price',
         'genre_id',
         'director_id',

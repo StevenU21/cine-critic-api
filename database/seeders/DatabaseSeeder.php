@@ -7,7 +7,6 @@ use App\Models\Movie;
 use App\Models\Rating;
 use App\Models\User;
 use App\Models\Genre;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
