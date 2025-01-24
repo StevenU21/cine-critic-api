@@ -22,4 +22,9 @@ class Director extends Model
     {
         return $this->hasMany(Movie::class);
     }
+
+    public function getAgeAttribute(): int
+    {
+        return now()->diffInYears($this->birth_date);
+    }
 }
