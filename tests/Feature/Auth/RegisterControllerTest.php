@@ -2,21 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use App\Models\User;
 use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(RolesAndPermissionsSeeder::class);
-    }
-
     public function test_user_can_register()
     {
         $response = $this->postJson(route('register'), [

@@ -3,21 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use Tests\TestCase;
 use App\Models\Genre;
 
 class GenreControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(RolesAndPermissionsSeeder::class);
-    }
-
     public function test_admin_user_can_view_genre_list()
     {
         Genre::factory(10)->create();

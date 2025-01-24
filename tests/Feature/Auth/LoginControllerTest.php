@@ -2,16 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 
 class LoginControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_user_can_login()
     {
         $user = User::factory()->create([

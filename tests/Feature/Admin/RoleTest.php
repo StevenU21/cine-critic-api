@@ -2,22 +2,12 @@
 
 namespace Tests\Feature\Admin;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
-    use refreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(RolesAndPermissionsSeeder::class);
-    }
-
     public function test_admin_user_can_view_role_list()
     {
         $user = User::factory()->create();
