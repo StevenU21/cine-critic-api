@@ -14,6 +14,15 @@ class DirectorResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->when($request->has('include_id'), $this->id),
+            'name' => $this->title,
+            'biography' => $this->biography,
+            'image' => $this->image(),
+            'birth_date' => $this->birth_date,
+            'nationality' => $this->nationality,
+            'created_at' => $this->when($request->has('include_timestamps'), $this->created_at),
+            'updated_at' => $this->when($request->has('include_timestamps'), $this->updated_at),
+        ];
     }
 }

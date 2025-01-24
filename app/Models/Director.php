@@ -27,4 +27,13 @@ class Director extends Model
     {
         return now()->diffInYears($this->birth_date);
     }
+
+    public function image(): string
+    {
+        if ($this->image) {
+            return asset('storage/directors_images/' . $this->image);
+        } else {
+            return 'https://www.pngarts.com/files/3/Avatar-PNG-Download-Image.png';
+        }
+    }
 }
