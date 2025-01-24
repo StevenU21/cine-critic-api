@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use App\Models\Director;
+use App\Http\Resources\DirectorResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DirectorController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $this->authorize('viewAny', Director::class);
+        
+        $directors = Director::latest()->paginate(10);
+        return DirectorResource::collection($directors);
     }
 
     /**
