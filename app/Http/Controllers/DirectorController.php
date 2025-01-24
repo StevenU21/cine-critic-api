@@ -38,7 +38,7 @@ class DirectorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DirectorRequest $request, ImageService $imageService)
+    public function store(DirectorRequest $request, ImageService $imageService): DirectorResource
     {
         $this->authorize('create', Director::class);
 
@@ -55,16 +55,36 @@ class DirectorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DirectorRequest $request, int $id, ImageService $imageService): DirectorResource
     {
-        //
+        $director = Director::findOrFailCustom($id);
+
+        $this->authorize('update', $director);
+
+        $director->update($request->validated());
+
+        if ($request->hasFile('image')) {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $director->image = $imageService->storeImage($request->file('image'),$imageName, $director->id, 'directors_image');
+        }
+
+        return new DirectorResource($director);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id, ImageService $imageService): void
     {
-        //
+        $director = Director::findOrFailCustom($id);
+
+        $this->authorize('delete', $director);
+
+        if ($director->image) {
+            $imageService->deleteImage($director->image);
+        }
+
+        $director->delete();
     }
 }
