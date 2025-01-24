@@ -31,13 +31,13 @@ class Movie extends Model
         return $this->belongsTo(Director::class);
     }
 
-    public function ratings(): HasMany
+    public function reviews(): HasMany
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Review::class);
     }
 
     public function averageRating(): float
     {
-        return $this->ratings()->avg('rating') ?? 0;
+        return $this->reviews()->avg('rating') ?? 0;
     }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Director;
 use App\Models\Movie;
 use App\Models\Rating;
+use App\Models\Review;
 use App\Models\User;
 use App\Models\Genre;
 use Illuminate\Database\Seeder;
@@ -39,7 +40,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $ReviewerUser->assignRole('reviewer');
 
-        User::factory(200)->create();
+        User::factory(100)->create();
 
         foreach (User::all() as $user) {
             $role = ['reviewer', 'moderator'][array_rand(['reviewer', 'moderator'])];
@@ -48,13 +49,13 @@ class DatabaseSeeder extends Seeder
 
         Genre::factory(20)->create();
         Director::factory(40)->create();
-        Movie::factory(500)->create();
+        Movie::factory(300)->create();
 
         $reviewers = User::role('reviewer')->get();
 
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 400; $i++) {
             $reviewer = $reviewers->random();
-            Rating::factory()->create(['user_id' => $reviewer->id]);
+            Review::factory()->create(['user_id' => $reviewer->id]);
         }
     }
 }

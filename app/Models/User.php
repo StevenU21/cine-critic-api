@@ -49,8 +49,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function ratings(): HasMany
+    public function reviews(): HasMany
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Review::class);
     }
 }
