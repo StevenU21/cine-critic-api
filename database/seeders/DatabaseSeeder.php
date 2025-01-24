@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $ReviewerUser->assignRole('reviewer');
 
-        User::factory(100)->create();
+        User::factory(50)->create();
 
         foreach (User::all() as $user) {
             $role = ['reviewer', 'moderator'][array_rand(['reviewer', 'moderator'])];
@@ -49,11 +49,11 @@ class DatabaseSeeder extends Seeder
 
         Genre::factory(20)->create();
         Director::factory(40)->create();
-        Movie::factory(300)->create();
+        Movie::factory(100)->create();
 
         $reviewers = User::role('reviewer')->get();
 
-        for ($i = 0; $i < 400; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $reviewer = $reviewers->random();
             Review::factory()->create(['user_id' => $reviewer->id]);
         }
