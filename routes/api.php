@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\GenreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Genre routes
     Route::put('/genres/{genre}', [GenreController::class, 'update'])->name('genres.update');
     Route::apiResource('/genres', GenreController::class)->except('update');
+
+    // Director routes
+    Route::put('/directors/{director}', [DirectorController::class, 'update'])->name('directors.update');
+    Route::apiResource('/directors', DirectorController::class)->except(['update']);
 
     // User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

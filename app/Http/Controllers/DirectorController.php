@@ -17,39 +17,26 @@ class DirectorController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $this->authorize('viewAny', Director::class);
-        
+
         $directors = Director::latest()->paginate(10);
         return DirectorResource::collection($directors);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      */
-    public function create()
+    public function show(int $id): DirectorResource
     {
-        //
+        $director = Director::findOrFailCustom($id);
+
+        $this->authorize('view', $director);
+        return new DirectorResource($director);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }
