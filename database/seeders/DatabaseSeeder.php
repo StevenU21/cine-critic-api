@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Director;
 use App\Models\Movie;
+use App\Models\Rating;
 use App\Models\User;
 use App\Models\Genre;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -49,5 +50,9 @@ class DatabaseSeeder extends Seeder
         Genre::factory(20)->create();
         Director::factory(40)->create();
         Movie::factory(500)->create();
+
+        foreach (User::role('reviewer')->get() as $reviewer) {
+            Rating::factory(1000)->create(['user_id' => $reviewer->id]);
+        }
     }
 }

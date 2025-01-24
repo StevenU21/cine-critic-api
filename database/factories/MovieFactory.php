@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Director;
 use App\Models\Genre;
+use App\Models\Rating;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +28,7 @@ class MovieFactory extends Factory
             'duration' => fake()->randomElement(['120', '150', '180']),
             'director_id' => Director::inRandomOrder()->first()->id,
             'genre_id' => Genre::inRandomOrder()->first()->id,
+            'rating_id' => Rating::inRandomOrder()->first()->id,
         ];
     }
 }
