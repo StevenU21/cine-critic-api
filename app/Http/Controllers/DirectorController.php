@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DirectorRequest;
+use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\Director;
@@ -37,14 +38,15 @@ class DirectorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DirectorRequest $request)
+    public function store(DirectorRequest $request, ImageService $imageService)
     {
         $this->authorize('create', Director::class);
 
-        $director = Director::fill($request->validated());
+        $director = Director::create($request->validated());
 
         if ($request->hasFile('image')) {
-            $director->image = $request->file('image')->store('directors_images');
+            $imageName = $request->file('image')->getClientOriginalName();
+            $director->image = $imageService->storeImage($request->file('image'),$imageName, $director->id, 'directors_image');
         }
 
         return new DirectorResource($director);

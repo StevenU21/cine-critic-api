@@ -20,7 +20,7 @@ class DirectorFactory extends Factory
             'name' => fake()->name(),
             'biography' => fake()->sentence(6),
             'image' => fake()->imageUrl(),
-            'birth_date' => fake()->date(),
+            'birth_date' => fake()->date('d-m-Y'),
             'nationality' => fake()->country(),
         ];
     }
