@@ -17,7 +17,11 @@ class DirectorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'biography' => fake()->sentence(6),
+            'image' => fake()->imageUrl(),
+            'birth_date' => fake()->date(),
+            'nationality' => fake()->country(),
         ];
     }
 }

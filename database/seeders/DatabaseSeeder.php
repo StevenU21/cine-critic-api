@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Director;
+use App\Models\Movie;
 use App\Models\User;
 use App\Models\Genre;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -44,6 +46,8 @@ class DatabaseSeeder extends Seeder
             $user->assignRole($role);
         }
 
-        Genre::factory(100)->create();
+        Genre::factory(20)->create();
+        Director::factory(40)->create();
+        Movie::factory(500)->create();
     }
 }
