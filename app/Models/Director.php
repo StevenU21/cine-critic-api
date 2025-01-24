@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Director extends Model
 {
@@ -16,4 +17,9 @@ class Director extends Model
         'birth_date',
         'nationality',
     ];
+
+    public function movies(): HasMany
+    {
+        return $this->hasMany(Movie::class);
+    }
 }
