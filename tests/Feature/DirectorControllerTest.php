@@ -195,7 +195,7 @@ class DirectorControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_director_image_must_be_an_image_file_of_type_jpeg_png_jpg_gif_svg_webp_and_max_4096_kb_and_dimensions_1000x1500_pixels()
+    public function test_director_image_must_be_an_image_file_of_type_jpeg_png_jpg_gif_svg_webp_and_max_4096_kb()
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
