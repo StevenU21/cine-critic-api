@@ -6,6 +6,7 @@ use App\Models\Director;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class DirectorControllerTest extends TestCase
 {
@@ -383,6 +384,28 @@ class DirectorControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_if_has_file_image_is_deleted_before_updating_director_image()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $director = Director::factory()->create();
+
+        $directorData = Director::factory()->make()->toArray();
+
+        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/directors/$director->id", $directorData);
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/directors/$director->id", $directorData);
+
+        $response->assertStatus(200);
+    }
+
     public function test_moderator_can_update_director()
     {
         $user = User::factory()->create();
@@ -431,6 +454,28 @@ class DirectorControllerTest extends TestCase
         $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/directors/$director->id");
 
         $response->assertStatus(200);
+    }
+
+    public function test_image_is_deleted_after_deleting_director()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $directorData = Director::factory()->make()->toArray();
+        $directorData['image'] = UploadedFile::fake()->image('product.jpg', 1000, 1500);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
+        $response->assertStatus(201);
+
+        $director = Director::first();
+        $imagePath = $director->image;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/directors/{$director->id}");
+        $response->assertStatus(200);
+
+        Storage::disk('public')->assertMissing($imagePath);
     }
 
     public function test_moderator_cant_delete_director()

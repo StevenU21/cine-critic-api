@@ -26,7 +26,7 @@ class DirectorRequest extends FormRequest
             'biography' => ['required', 'string', 'min:3', 'max:2000'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:4096'],
             'birth_date' => ['required', 'date', 'before:today', 'after:01-01-1890', 'date_format:d-m-Y'],
-            'nationality' => ['required', 'string', 'max:40'],
+            'nationality' => ['required', 'string', 'max:50'],
         ];
     }
 

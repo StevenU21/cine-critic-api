@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DirectorRequest;
 use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 use App\Models\Director;
 use App\Http\Resources\DirectorResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -45,8 +44,7 @@ class DirectorController extends Controller
         $director = Director::create($request->validated());
 
         if ($request->hasFile('image')) {
-            $imageName = $request->file('image')->getClientOriginalName();
-            $director->image = $imageService->storeImage($request->file('image'),$imageName, $director->id, 'directors_image');
+            $director->image = $imageService->storeImage($request->file('image'), $director->name, $director->id, 'directors_images');
         }
 
         return new DirectorResource($director);
@@ -69,8 +67,7 @@ class DirectorController extends Controller
                 $imageService->deleteImage($director->image);
             }
 
-            $imageName = $request->file('image')->getClientOriginalName();
-            $director->image = $imageService->storeImage($request->file('image'),$imageName, $director->id, 'directors_image');
+            $director->image = $imageService->storeImage($request->file('image'), $director->name, $director->id, 'directors_images');
         }
 
         return new DirectorResource($director);
