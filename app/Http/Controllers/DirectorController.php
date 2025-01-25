@@ -7,6 +7,7 @@ use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Director;
 use App\Http\Resources\DirectorResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DirectorController extends Controller
@@ -45,6 +46,7 @@ class DirectorController extends Controller
 
         if ($request->hasFile('image')) {
             $director->image = $imageService->storeImage($request->file('image'), $director->name, $director->id, 'directors_images');
+            $director->save();
         }
 
         return new DirectorResource($director);
@@ -62,22 +64,21 @@ class DirectorController extends Controller
         $director->update($request->validated());
 
         if ($request->hasFile('image')) {
-
             if ($director->image) {
                 $imageService->deleteImage($director->image);
             }
-
             $director->image = $imageService->storeImage($request->file('image'), $director->name, $director->id, 'directors_images');
+
+            $director->save();
         }
 
         return new DirectorResource($director);
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id, ImageService $imageService): void
+    public function destroy(int $id, ImageService $imageService): JsonResponse
     {
         $director = Director::findOrFailCustom($id);
 
@@ -88,5 +89,7 @@ class DirectorController extends Controller
         }
 
         $director->delete();
+
+        return response()->json(null, 204);
     }
 }

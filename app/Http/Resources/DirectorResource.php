@@ -19,7 +19,7 @@ class DirectorResource extends JsonResource
             'id' => $this->when($user && $user->hasRole('admin') && $request->has('include_id'), $this->id),
             'name' => $this->name,
             'biography' => $this->biography,
-            'image' => $this->image(),
+            'image_url' => $this->image_url,
             'birth_date' => $this->birth_date,
             'nationality' => $this->nationality,
             'created_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),

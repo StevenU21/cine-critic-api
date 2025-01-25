@@ -29,8 +29,8 @@ class Director extends Model
         return now()->diffInYears($this->birth_date);
     }
 
-    public function image(): string
+    public function getImageUrlAttribute(): string
     {
-        return asset('storage/directors_images/' . $this->image);
+        return asset('storage/' . $this->image);
     }
 }
