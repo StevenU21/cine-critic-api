@@ -453,7 +453,7 @@ class DirectorControllerTest extends TestCase
 
         $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/directors/$director->id");
 
-        $response->assertStatus(200);
+        $response->assertStatus(204);
     }
 
     public function test_image_is_deleted_after_deleting_director()
@@ -473,7 +473,7 @@ class DirectorControllerTest extends TestCase
         $imagePath = $director->image;
 
         $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/directors/{$director->id}");
-        $response->assertStatus(200);
+        $response->assertStatus(204);
 
         Storage::disk('public')->assertMissing($imagePath);
     }
