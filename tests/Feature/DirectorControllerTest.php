@@ -464,7 +464,7 @@ class DirectorControllerTest extends TestCase
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $directorData = Director::factory()->make()->toArray();
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg', 1000, 1500);
+        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
         $response->assertStatus(201);
