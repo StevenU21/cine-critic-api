@@ -24,7 +24,7 @@ class DirectorRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:30'],
             'biography' => ['required', 'string', 'min:3', 'max:2000'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:4096', 'dimensions:min_width=1000,min_height=1500,max_width=1000,max_height=1500'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:4096'],
             'birth_date' => ['required', 'date', 'before:today', 'after:01-01-1890', 'date_format:d-m-Y'],
             'nationality' => ['required', 'string', 'max:40'],
         ];
@@ -51,7 +51,6 @@ class DirectorRequest extends FormRequest
             'image.image' => 'The image field must be an image.',
             'image.mimes' => 'The image field must be a file of type: :values.',
             'image.max' => 'The image field may not be greater than :max kilobytes.',
-            'image.dimensions' => 'The image field must be 1000x1500 pixels.',
             'birth_date.required' => 'The birth date field is required.',
             'birth_date.date' => 'The birth date field must be a date.',
             'birth_date.before' => 'The birth date field must be a date before today.',

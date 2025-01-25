@@ -64,6 +64,11 @@ class DirectorController extends Controller
         $director->update($request->validated());
 
         if ($request->hasFile('image')) {
+
+            if ($director->image) {
+                $imageService->deleteImage($director->image);
+            }
+
             $imageName = $request->file('image')->getClientOriginalName();
             $director->image = $imageService->storeImage($request->file('image'),$imageName, $director->id, 'directors_image');
         }
