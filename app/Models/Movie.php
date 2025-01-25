@@ -40,4 +40,9 @@ class Movie extends Model
     {
         return $this->reviews()->avg('rating') ?? 0;
     }
+
+    public function getImageAttribute(): string
+    {
+        return asset('storage/' . $this->cover_image);
+    }
 }

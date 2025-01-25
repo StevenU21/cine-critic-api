@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('cover_image');
             $table->string('release_date');
             $table->string('trailer_url');
-            $table->string('duration');
+            $table->integer('duration');
 
             $table->integer('director_id')->unsigned();
             $table->foreign('director_id')->references('id')->on('directors')->onDelete('cascade')->onUpdate('cascade');

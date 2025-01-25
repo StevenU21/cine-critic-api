@@ -24,7 +24,7 @@ class MovieFactory extends Factory
             'cover_image' => fake()->imageUrl(),
             'release_date' => fake()->date(),
             'trailer_url' => fake()->url(),
-            'duration' => fake()->randomElement(['120', '150', '180']),
+            'duration' => fake()->randomElement([90, 120, 150, 180]),
             'director_id' => Director::inRandomOrder()->first()->id,
             'genre_id' => Genre::inRandomOrder()->first()->id,
         ];
