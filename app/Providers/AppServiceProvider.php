@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Models\Director;
 use App\Models\Genre;
+use App\Models\Movie;
 use App\Models\User;
 use App\Policies\DirectorPolicy;
 use App\Policies\GenrePolicy;
+use App\Policies\MoviePolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
@@ -38,5 +40,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Director::class, DirectorPolicy::class);
+        Gate::policy(Movie::class, MoviePolicy::class);
     }
 }

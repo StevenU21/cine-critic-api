@@ -20,9 +20,10 @@ class UserController extends Controller
 
         return UserResource::collection($users);
     }
-    
-    public function show(User $user): UserResource
+
+    public function show(int $id): UserResource
     {
+        $user = User::findOrFailCustom($id);
         $this->authorize('view', $user);
 
         $user->load(['roles.permissions']);

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Traits\FindModelOrFail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Movie extends Model
 {
-    use HasFactory;
+    use HasFactory, FindModelOrFail;
 
     protected $fillable = [
         'title',
@@ -35,9 +37,18 @@ class Movie extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function averageRating(): float
+    public function ratingAverage(): HasOne
     {
-        return $this->reviews()->avg('rating') ?? 0;
+        return $this->hasOne(Review::class)
+                    ->selectRaw('movie_id, AVG(rating) as aggregate')
+                    ->groupBy('movie_id');
+    }
+
+    public function reviewsCount(): HasOne
+    {
+        return $this->hasOne(Review::class)
+                    ->selectRaw('movie_id, COUNT(*) as aggregate')
+                    ->groupBy('movie_id');
     }
 
     public function getImageAttribute(): string

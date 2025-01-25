@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Director routes
     Route::put('/directors/{director}', [DirectorController::class, 'update'])->name('directors.update');
     Route::apiResource('/directors', DirectorController::class)->except(['update']);
+
+    // Movie routes
+    Route::put('/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
+    Route::apiResource('/movies', MovieController::class)->except(['update']);
 
     // User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
