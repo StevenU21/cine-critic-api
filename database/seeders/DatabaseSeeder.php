@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Director;
 use App\Models\Movie;
-use App\Models\Rating;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\Genre;
