@@ -34,10 +34,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
     Route::apiResource('/movies', MovieController::class)->except(['update']);
 
+    // General reviews routes
+    Route::get('/reviews', [ReviewController::class, 'general_index'])->name('reviews.general.index');
+    Route::get('/reviews/{review}', [ReviewController::class, 'general_show'])->name('reviews.general.show');
+
     // Review routes
-    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
-    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-    Route::apiResource('/reviews', ReviewController::class)->except(['update', 'destroy']);
+    Route::prefix('/reviews')->group(function () {
+        Route::get('/movies/{movie}', [ReviewController::class, 'index'])->name('reviews.index');
+        // Route::post('/movies/{movie}', [ReviewController::class, 'store'])->name('reviews.store');
+        // Route::put('/movies/{movie}/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+        // Route::delete('/movies/{movie}/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    });
+
+    // Route::get('/movies/reviews/index', [ReviewController::class, 'index'])->name('movies.reviews.index');
+    // Route::get('/movies/reviews/{review}', [ReviewController::class, 'show'])->name('movies.reviews.show');
+    // Route::post('/movies/{movie}/reviews', [ReviewController::class, 'store'])->name('movies.reviews.store');
+    // Route::put('/movies/{movie}/reviews/{review}', [ReviewController::class, 'update'])->name('movies.reviews.update');
+    // Route::delete('/movies/{movie}/reviews/{review}', [ReviewController::class, 'destroy'])->name('movies.reviews.destroy');
 
     // User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
