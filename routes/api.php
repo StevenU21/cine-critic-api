@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Movie routes
     Route::put('/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
     Route::apiResource('/movies', MovieController::class)->except(['update']);
+
+    // Review routes
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::apiResource('/reviews', ReviewController::class)->except(['update']);
 
     // User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
