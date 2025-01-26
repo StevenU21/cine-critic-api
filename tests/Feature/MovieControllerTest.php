@@ -4,13 +4,300 @@ namespace Tests\Feature;
 
 use App\Models\Movie;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class MovieControllerTest extends TestCase
 {
+    public function test_movie_title_is_required()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        unset($movieData['title']);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_title_must_be_at_least_6_characters()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['title'] = 'test';
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_title_must_not_be_greater_than_60_characters()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['title'] = str_repeat('a', 61);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_title_is_unique()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory()->create(['title' => 'test']);
+
+        $movieData = Movie::factory()->make(['title' => 'test'])->toArray();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_description_is_required()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        unset($movieData['description']);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_description_must_be_at_least_10_characters()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['description'] = 'test';
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_description_must_not_be_greater_than_1000_characters()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['description'] = str_repeat('a', 1001);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_cover_image_is_required()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        unset($movieData['cover_image']);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_cover_image_must_be_an_image_file()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['cover_image'] = 'test';
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_cover_image_must_be_a_file_of_type_jpeg_png_jpg_gif_svg()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['cover_image'] = UploadedFile::fake()->create('test.pdf');
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_cover_image_must_not_be_greater_than_2048_kilobytes()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['cover_image'] = UploadedFile::fake()->image('cover_image.jpg')->size(3000);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_release_date_is_required()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        unset($movieData['release_date']);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_release_date_must_be_a_date_before_today()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['release_date'] = now()->addDay()->format('d-m-Y');
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_release_date_must_be_in_the_format_d_m_Y()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['release_date'] = now()->format('Y-m-d');
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_trailer_url_is_required()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        unset($movieData['trailer_url']);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_trailer_url_must_be_a_valid_url()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['trailer_url'] = 'test';
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_duration_is_required()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        unset($movieData['duration']);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_movie_duration_must_be_an_integer()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['duration'] = 'test';
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(302);
+    }
+
+
     public function test_admin_user_can_view_movie_list()
     {
         Movie::factory(10)->create();

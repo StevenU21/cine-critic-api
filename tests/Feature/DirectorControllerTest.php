@@ -51,7 +51,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['name'] = 'aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz';
+        $directorData['name'] = str_repeat('a', 31);
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
 
@@ -99,16 +99,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['biography'] = 'aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
-        aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz';
+        $directorData['biography'] = str_repeat('a', 2001);
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
 
