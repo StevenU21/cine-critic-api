@@ -239,4 +239,55 @@ class MovieControllerTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    public function test_admin_can_delete_movie()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movie = Movie::factory()->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/movies/$movie->id");
+
+        $response->assertStatus(204);
+    }
+
+    public function test_moderator_cant_delete_movie()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('moderator');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movie = Movie::factory()->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/movies/$movie->id");
+
+        $response->assertStatus(403);
+    }
+
+    public function test_reviewer_cant_delete_movie()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('reviewer');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $movie = Movie::factory()->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/movies/$movie->id");
+
+        $response->assertStatus(403);
+    }
+
+    public function test_guest_user_cant_delete_movie()
+    {
+        $movie = Movie::factory()->create();
+
+        $response = $this->delete("/api/movies/$movie->id");
+
+        $response->assertStatus(401);
+    }
 }

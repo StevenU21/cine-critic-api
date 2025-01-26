@@ -7,6 +7,7 @@ use App\Models\Movie;
 use App\Http\Resources\MovieResource;
 use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MovieController extends Controller
@@ -69,7 +70,7 @@ class MovieController extends Controller
         return new MovieResource($movie);
     }
 
-    public function destroy(int $id, ImageService $imageService): MovieResource
+    public function destroy(int $id, ImageService $imageService): JsonResponse
     {
         $movie = Movie::findOrFailCustom($id);
         $this->authorize('delete', $movie);
@@ -80,6 +81,6 @@ class MovieController extends Controller
 
         $movie->delete();
 
-        return new MovieResource($movie);
+        return response()->json(null, 204);
     }
 }
