@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Exceptions\AuthorizationException;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -41,19 +42,29 @@ class ReviewPolicy
         return true;
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Review $review): bool
     {
-        if (!$user->hasPermissionTo('update reviews')) {
-            throw new AuthorizationException();
+        if ($user->hasRole('admin') || $user->hasRole('moderator')) {
+            return true;
         }
-        return true;
+
+        if ($user->hasRole('reviewer') && $user->id === $review->user_id) {
+            return true;
+        }
+
+        throw new AuthorizationException();
     }
 
-    public function delete(User $user): bool
+    public function delete(User $user, Review $review): bool
     {
-        if (!$user->hasPermissionTo('delete reviews')) {
-            throw new AuthorizationException();
+        if ($user->hasRole('admin') || $user->hasRole('moderator')) {
+            return true;
         }
-        return true;
+
+        if ($user->hasRole('reviewer') && $user->id === $review->user_id) {
+            return true;
+        }
+
+        throw new AuthorizationException();
     }
 }

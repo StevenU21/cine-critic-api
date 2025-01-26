@@ -31,7 +31,7 @@ class GenrePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Genre $genre): bool
+    public function view(User $user): bool
     {
         if (!$user->hasPermissionTo('read genres')) {
             throw new AuthorizationException();
@@ -53,7 +53,7 @@ class GenrePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Genre $genre): bool
+    public function update(User $user): bool
     {
         if (!$user->hasAllPermissions('update genres')) {
             throw new AuthorizationException();
@@ -64,7 +64,7 @@ class GenrePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Genre $genre): bool
+    public function delete(User $user): bool
     {
         if (!$user->hasPermissionTo('delete genres')) {
             throw new AuthorizationException();

@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -43,7 +44,7 @@ class ReviewController extends Controller
 
         $review = Review::create($request->validated() + [
             'movie_id' => $request->movie_id,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::id(),
         ]);
 
         return new ReviewResource($review);
