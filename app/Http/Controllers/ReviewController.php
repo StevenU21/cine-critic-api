@@ -63,14 +63,16 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ReviewRequest $request, int $id): ReviewResource
+    public function update(ReviewRequest $request, int $movieId, int $reviewId): ReviewResource
     {
-        $review = Review::findOrFailCustom($id);
+        $review = Review::findOrFailCustom($reviewId);
         $this->authorize('update', $review);
 
+        $movie = Movie::findOrFailCustom($movieId);
+
         $review->update($request->validated() + [
-            'movie_id' => $request->movie_id,
-            'user_id' => $request->user_id,
+            'movie_id' => $movie->id,
+            'user_id' => Auth::id(),
         ]);
 
         return new ReviewResource($review);

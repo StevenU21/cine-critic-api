@@ -41,9 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Review routes
     Route::prefix('/reviews')->group(function () {
         Route::get('/movies/{movie}', [ReviewController::class, 'index'])->name('reviews.index');
-        // Route::post('/movies/{movie}', [ReviewController::class, 'store'])->name('reviews.store');
-        // Route::put('/movies/{movie}/{review}', [ReviewController::class, 'update'])->name('reviews.update');
-        // Route::delete('/movies/{movie}/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+        Route::post('/movies/{movie}', [ReviewController::class, 'store'])->name('reviews.store');
+        Route::put('/movies/{movie}/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+        Route::delete('/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
     });
 
     // Route::get('/movies/reviews/index', [ReviewController::class, 'index'])->name('movies.reviews.index');

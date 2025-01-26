@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Director;
 use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
@@ -172,236 +173,276 @@ class ReviewControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    //  public function test_admin_user_can_create_review()
-    // {
-    //     $user = User::factory()->create();
-    //     $user->assignRole('admin');
+    public function test_admin_user_can_create_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
-    //     $movie = Movie::factory()->create();
+        $movie = Movie::factory()->create();
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $data = [
-    //         'movie_id' => $movie->id,
-    //         'rating' => 5,
-    //         'content' => 'This is a great movie!',
-    //     ];
+        $data = [
+            'movie_id' => $movie->id,
+            'rating' => 5,
+            'content' => 'This is a great movie!',
+        ];
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews', $data);
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
 
-    //     $response->assertStatus(201);
+        $response->assertStatus(201);
 
-    //     $this->assertDatabaseHas('reviews', [
-    //         'movie_id' => $movie->id,
-    //         'user_id' => $user->id,
-    //         'rating' => 5,
-    //         'content' => 'This is a great movie!',
-    //     ]);
-    // }
+        $this->assertDatabaseHas('reviews', [
+            'movie_id' => $movie->id,
+            'user_id' => $user->id,
+            'rating' => 5,
+            'content' => 'This is a great movie!',
+        ]);
+    }
 
-    // public function test_moderator_user_cant_create_review()
-    // {
-    //     $user = User::factory()->create();
-    //     $user->assignRole('moderator');
+    public function test_moderator_user_cant_create_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('moderator');
 
-    //     $movie = Movie::factory()->create();
+        $movie = Movie::factory()->create();
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $data = [
-    //         'movie_id' => $movie->id,
-    //         'rating' => 5,
-    //         'content' => 'This is a great movie!',
-    //     ];
+        $data = [
+            'movie_id' => $movie->id,
+            'rating' => 5,
+            'content' => 'This is a great movie!',
+        ];
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews', $data);
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
 
-    //     $response->assertStatus(403);
-    // }
+        $response->assertStatus(403);
+    }
 
-    // public function test_reviewer_user_can_create_review()
-    // {
-    //     $user = User::factory()->create();
-    //     $user->assignRole('reviewer');
+    public function test_reviewer_user_can_create_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('reviewer');
 
-    //     $movie = Movie::factory()->create();
+        $movie = Movie::factory()->create();
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $data = [
-    //         'movie_id' => $movie->id,
-    //         'rating' => 5,
-    //         'content' => 'This is a great movie!',
-    //     ];
+        $data = [
+            'movie_id' => $movie->id,
+            'rating' => 5,
+            'content' => 'This is a great movie!',
+        ];
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews', $data);
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
 
-    //     $response->assertStatus(201);
+        $response->assertStatus(201);
 
-    //     $this->assertDatabaseHas('reviews', [
-    //         'movie_id' => $movie->id,
-    //         'user_id' => $user->id,
-    //         'rating' => 5,
-    //         'content' => 'This is a great movie!',
-    //     ]);
-    // }
+        $this->assertDatabaseHas('reviews', [
+            'movie_id' => $movie->id,
+            'user_id' => $user->id,
+            'rating' => 5,
+            'content' => 'This is a great movie!',
+        ]);
+    }
 
-    // public function test_guest_user_cannot_create_review()
-    // {
-    //     $movie = Movie::factory()->create();
+    public function test_guest_user_cannot_create_review()
+    {
+        $movie = Movie::factory()->create();
 
-    //     $data = [
-    //         'movie_id' => $movie->id,
-    //         'rating' => 5,
-    //         'content' => 'This is a great movie!',
-    //     ];
+        $data = [
+            'movie_id' => $movie->id,
+            'rating' => 5,
+            'content' => 'This is a great movie!',
+        ];
 
-    //     $response = $this->post('/api/reviews', $data);
+        $response = $this->post('/api/reviews/movies/' . $movie->id, $data);
 
-    //     $response->assertStatus(401);
-    // }
+        $response->assertStatus(401);
+    }
 
-    // public function test_admin_user_can_update_review()
-    // {
-    //     $review = Review::factory()->create();
+    public function test_admin_user_can_update_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
-    //     $user = User::factory()->create();
-    //     $user->assignRole('admin');
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $movie = Movie::factory()->create();
 
-    //     $review = Review::factory()->create();
+        $review = Review::factory()->create([
+            'movie_id' => $movie->id,
+            'user_id' => $user->id,
+        ]);
 
-    //     $reviewData = Review::factory()->make()->toArray();
+        $updatedData = [
+            'content' => 'Updated review content',
+            'rating' => 5,
+            'user_id' => $user->id,
+        ];
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/$review->id", $reviewData);
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/movies/$movie->id/$review->id", $updatedData);
 
-    //     $response->assertStatus(200);
+        $response->assertStatus(200);
+    }
 
-    //     $this->assertDatabaseHas('reviews', $reviewData);
-    // }
+    public function test_moderator_user_can_update_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('moderator');
 
-    // public function test_moderator_user_can_update_review()
-    // {
-    //     $review = Review::factory()->create();
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $user = User::factory()->create();
-    //     $user->assignRole('moderator');
+        $movie = Movie::factory()->create();
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $review = Review::factory()->create([
+            'movie_id' => $movie->id,
+            'user_id' => $user->id,
+        ]);
 
-    //     $review = Review::factory()->create();
+        $updatedData = [
+            'content' => 'Updated review content',
+            'rating' => 5,
+            'user_id' => $user->id,
+        ];
 
-    //     $reviewData = Review::factory()->make()->toArray();
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/movies/$movie->id/$review->id", $updatedData);
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/$review->id", $reviewData);
+        $response->assertStatus(200);
+    }
 
-    //     $response->assertStatus(200);
+    public function test_reviewer_user_can_update_his_own_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('reviewer');
 
-    //     $this->assertDatabaseHas('reviews', $reviewData);
-    // }
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    // public function test_reviewer_user_can_update_review_only_his_own_review()
-    // {
-    //     $review = Review::factory()->create();
+        $movie = Movie::factory()->create();
 
-    //     $user = User::factory()->create();
-    //     $user->assignRole('reviewer');
+        $review = Review::factory()->create([
+            'movie_id' => $movie->id,
+            'user_id' => $user->id,
+        ]);
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $updatedData = [
+            'content' => 'Updated review content',
+            'rating' => 5,
+            'user_id' => $user->id,
+        ];
 
-    //     $review = Review::factory()->create([
-    //         'user_id' => $user->id,
-    //     ]);
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/movies/$movie->id/$review->id", $updatedData);
 
-    //     $reviewData = Review::factory()->make()->toArray();
+        $response->assertStatus(200);
+    }
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/$review->id", $reviewData);
+    public function test_reviewer_user_cannot_update_other_user_review()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('reviewer');
 
-    //     $response->assertStatus(200);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $this->assertDatabaseHas('reviews', $reviewData);
-    // }
+        $movie = Movie::factory()->create();
 
-    // public function test_guest_user_cannot_update_review()
-    // {
-    //     $review = Review::factory()->create();
+        $review = Review::factory()->create([
+            'movie_id' => $movie->id,
+        ]);
 
-    //     $data = [
-    //         'movie_id' => $review->movie_id,
-    //         'rating' => 4,
-    //         'content' => 'This is a good movie!',
-    //     ];
+        $updatedData = [
+            'content' => 'Updated review content',
+            'rating' => 5,
+            'user_id' => $user->id,
+        ];
 
-    //     $response = $this->put("/api/reviews/$review->id", $data);
+        $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/reviews/movies/$movie->id/$review->id", $updatedData);
 
-    //     $response->assertStatus(401);
-    // }
+        $response->assertStatus(403);
+    }
 
-    // public function test_admin_user_can_delete_review()
-    // {
-    //     $review = Review::factory()->create();
+    public function test_guest_user_cannot_update_review()
+    {
+        $movie = Movie::factory()->create();
 
-    //     $user = User::factory()->create();
-    //     $user->assignRole('admin');
+        $review = Review::factory()->create([
+            'movie_id' => $movie->id,
+        ]);
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $updatedData = [
+            'content' => 'Updated review content',
+            'rating' => 5,
+        ];
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/reviews/$review->id");
+        $response = $this->put("/api/reviews/movies/$movie->id/$review->id", $updatedData);
 
-    //     $response->assertStatus(204);
+        $response->assertStatus(401);
+    }
 
-    //     $this->assertDatabaseMissing('reviews', [
-    //         'id' => $review->id,
-    //     ]);
-    // }
+    public function test_admin_user_can_delete_review()
+    {
+        $review = Review::factory()->create();
 
-    // public function test_moderator_user_can_delete_review()
-    // {
-    //     $review = Review::factory()->create();
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
-    //     $user = User::factory()->create();
-    //     $user->assignRole('moderator');
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/reviews/$review->id");
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/reviews/$review->id");
+        $response->assertStatus(204);
 
-    //     $response->assertStatus(204);
+        $this->assertDatabaseMissing('reviews', [
+            'id' => $review->id,
+        ]);
+    }
 
-    //     $this->assertDatabaseMissing('reviews', [
-    //         'id' => $review->id,
-    //     ]);
-    // }
+    public function test_moderator_user_can_delete_review()
+    {
+        $review = Review::factory()->create();
 
-    // public function test_reviewer_user_can_delete_his_own_review()
-    // {
-    //     $review = Review::factory()->create();
+        $user = User::factory()->create();
+        $user->assignRole('moderator');
 
-    //     $user = User::factory()->create();
-    //     $user->assignRole('reviewer');
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $token = $user->createToken('auth_token')->plainTextToken;
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/reviews/$review->id");
 
-    //     $review = Review::factory()->create([
-    //         'user_id' => $user->id,
-    //     ]);
+        $response->assertStatus(204);
 
-    //     $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/reviews/$review->id");
+        $this->assertDatabaseMissing('reviews', [
+            'id' => $review->id,
+        ]);
+    }
 
-    //     $response->assertStatus(204);
+    public function test_reviewer_user_can_delete_his_own_review()
+    {
+        $review = Review::factory()->create();
 
-    //     $this->assertDatabaseMissing('reviews', [
-    //         'id' => $review->id,
-    //     ]);
-    // }
+        $user = User::factory()->create();
+        $user->assignRole('reviewer');
 
-    // public function test_guest_user_cannot_delete_review()
-    // {
-    //     $review = Review::factory()->create();
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-    //     $response = $this->delete("/api/reviews/$review->id");
+        $review = Review::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
-    //     $response->assertStatus(401);
-    // }
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/reviews/$review->id");
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('reviews', [
+            'id' => $review->id,
+        ]);
+    }
+
+    public function test_guest_user_cannot_delete_review()
+    {
+        $review = Review::factory()->create();
+
+        $response = $this->delete("/api/reviews/$review->id");
+
+        $response->assertStatus(401);
+    }
 }
