@@ -36,7 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Review routes
     Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
-    Route::apiResource('/reviews', ReviewController::class)->except(['update']);
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::apiResource('/reviews', ReviewController::class)->except(['update', 'destroy']);
 
     // User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
