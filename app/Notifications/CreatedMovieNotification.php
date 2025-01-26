@@ -3,20 +3,25 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Movie;
+use App\Models\User;
 
 class CreatedMovieNotification extends Notification
 {
     use Queueable;
 
+    protected $movie;
+    protected $user;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Movie $movie, User $user)
     {
-        //
+        $this->movie = $movie;
+        $this->user = $user;
     }
 
     /**
@@ -26,18 +31,20 @@ class CreatedMovieNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toDatabase($notifiable): array
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return $this->toArray($notifiable);
+    }
+
+    public function toBroadcast($notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage($this->toArray($notifiable));
     }
 
     /**
@@ -48,7 +55,10 @@ class CreatedMovieNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'type' => 'created',
+            'user_name' => $this->user->name,
+            'message' => 'The movie ' . $this->movie->title . ' has been created',
+            'movie_id' => $this->movie->id,
         ];
     }
 }
