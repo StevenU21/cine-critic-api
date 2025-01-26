@@ -27,6 +27,8 @@ class MovieRequest extends FormRequest
             'description' => ['required', 'string', 'min:10', 'max:1000'],
             'cover_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'release_date' => ['required', 'date', 'before:today', 'date_format:d-m-Y'],
+            'trailer_url' => ['required', 'url'],
+            'duration' => ['required', 'integer'],
         ];
     }
 
@@ -55,6 +57,9 @@ class MovieRequest extends FormRequest
             'release_date.date' => 'The release date field must be a date.',
             'release_date.before' => 'The release date field must be a date before today.',
             'release_date.date_format' => 'The release date field must be in the format: d-m-Y.',
+            'trailer_url.required' => 'The trailer URL field is required.',
+            'trailer_url.url' => 'The trailer URL field must be a valid URL.',
+            'duration.required' => 'The duration field is required.',
         ];
     }
 }

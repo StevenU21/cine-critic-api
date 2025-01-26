@@ -21,6 +21,8 @@ class MovieResource extends JsonResource
             'description' => $this->description,
             'image_url' => $this->image,
             'release_date' => $this->release_date,
+            'trailer_url' => $this->trailer_url,
+            'duration' => $this->duration,
             'genre' => $this->genre->name,
             'director' => $this->director->name,
             'average_rating' => $this->ratingAverage ? $this->ratingAverage->aggregate : 0,

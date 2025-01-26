@@ -16,7 +16,7 @@ class MovieController extends Controller
     {
         $this->authorize('viewAny', Movie::class);
 
-        $movies = Movie::with(['genre', 'movie', 'ratingAverage', 'reviewsCount'])->get();
+        $movies = Movie::with(['genre', 'director', 'ratingAverage', 'reviewsCount'])->get();
 
         return MovieResource::collection($movies);
     }
@@ -25,7 +25,7 @@ class MovieController extends Controller
     {
         $movie = Movie::findOrFailCustom($id);
         $this->authorize('view', $movie);
-        $movie->load(['genre', 'movie', 'ratingAverage', 'reviewsCount']);
+        $movie->load(['genre', 'director', 'ratingAverage', 'reviewsCount']);
 
         return new MovieResource($movie);
     }
@@ -34,7 +34,11 @@ class MovieController extends Controller
     {
         $this->authorize('create', Movie::class);
 
-        $movie = Movie::create($request->validated());
+        $movie = Movie::create($request->validated() +
+            [
+                'director_id' => $request->director_id,
+                'genre_id' => $request->genre_id,
+            ]);
 
         if ($request->hasFile('cover_image')) {
             $movie->cover_image = $imageService->storeImage($request->file('cover_image'), $movie->title, $movie->id, 'movies_images');
@@ -49,13 +53,16 @@ class MovieController extends Controller
         $movie = Movie::findOrFailCustom($id);
         $this->authorize('update', $movie);
 
-        $movie->update($request->validated());
+        $movie->update($request->validated() + [
+            'director_id' => $request->director_id,
+            'genre_id' => $request->genre_id,
+        ]);
 
         if ($request->hasFile('cover_image')) {
             if ($movie->cover_image) {
                 $imageService->deleteImage($movie->cover_image);
             }
-            $movie->image = $imageService->storeImage($request->file('image'), $movie->title, $movie->id, 'movies_images');
+            $movie->cover_image = $imageService->storeImage($request->file('cover_image'), $movie->title, $movie->id, 'movies_images');
             $movie->save();
         }
 

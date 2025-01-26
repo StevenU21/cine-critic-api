@@ -46,8 +46,8 @@ class DatabaseSeeder extends Seeder
             $user->assignRole($role);
         }
 
-        Genre::factory(10)->create();
         Director::factory(20)->create();
+        Genre::factory(10)->create();
         Movie::factory(100)->create();
 
         $reviewers = User::role('reviewer')->get();

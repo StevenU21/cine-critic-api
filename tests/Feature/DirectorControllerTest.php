@@ -313,7 +313,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
 
@@ -329,7 +329,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
 
@@ -345,7 +345,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
 
@@ -377,7 +377,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/directors/$director->id", $directorData);
 
@@ -395,7 +395,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/directors/$director->id", $directorData);
 
@@ -417,7 +417,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/directors/$director->id", $directorData);
 
@@ -435,7 +435,7 @@ class DirectorControllerTest extends TestCase
 
         $directorData = Director::factory()->make()->toArray();
 
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->put("/api/directors/$director->id", $directorData);
 
@@ -464,7 +464,7 @@ class DirectorControllerTest extends TestCase
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $directorData = Director::factory()->make()->toArray();
-        $directorData['image'] = UploadedFile::fake()->image('product.jpg');
+        $directorData['image'] = UploadedFile::fake()->image('director_image.jpg');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/directors', $directorData);
         $response->assertStatus(201);

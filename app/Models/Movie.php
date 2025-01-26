@@ -18,8 +18,10 @@ class Movie extends Model
         'description',
         'cover_image',
         'release_date',
-        'genre_id',
+        'trailer_url',
+        'duration',
         'director_id',
+        'genre_id',
     ];
 
     public function genre(): BelongsTo
