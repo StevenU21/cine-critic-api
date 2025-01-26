@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Director;
 use App\Models\Movie;
 use App\Models\Review;
 use App\Models\User;
@@ -10,6 +9,165 @@ use Tests\TestCase;
 
 class ReviewControllerTest extends TestCase
 {
+
+    public function test_review_content_is_required()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'rating' => 5,
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_content_must_be_a_string()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => 123,
+            'rating' => 5,
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_content_must_be_at_least_10_characters()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => 'short',
+            'rating' => 5,
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_content_must_not_exceed_1000_characters()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => str_repeat('a', 1001),
+            'rating' => 5,
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_rating_is_required()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => 'This is a great movie!',
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_rating_must_be_a_number()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => 'This is a great movie!',
+            'rating' => 'five',
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_rating_must_be_at_least_1()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => 'This is a great movie!',
+            'rating' => 0,
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_review_rating_must_not_exceed_5()
+    {
+        $user = User::factory()->create();
+
+        $movie = Movie::factory()->create();
+
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $data = [
+            'content' => 'This is a great movie!',
+            'rating' => 6,
+        ];
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/reviews/movies/' . $movie->id, $data);
+
+        $response->assertStatus(302);
+    }
+
     public function test_admin_user_can_view_general_review_list()
     {
         Review::factory(10)->create();
