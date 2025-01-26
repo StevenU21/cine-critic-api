@@ -21,8 +21,8 @@ class ReviewFactory extends Factory
         return [
             'content' => fake()->paragraph(),
             'rating' => fake()->randomFloat(1, 1, 5),
-            'user_id' => User::inRandomOrder()->first()->id,
             'movie_id' => Movie::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
 }
