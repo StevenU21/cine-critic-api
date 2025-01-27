@@ -35,6 +35,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
     Route::apiResource('/movies', MovieController::class)->except(['update']);
 
+    // Filtered movie routes
+    Route::get('/movies/filters/directors', [MovieController::class, 'getDirectorsForFilter'])->name('movies.filters.directors');
+    Route::get('/movies/filters/genres', [MovieController::class, 'getGenresForFilter'])->name('movies.filters.genres');
+    Route::get('/movies/filters/years', [MovieController::class, 'getYears'])->name('movies.filters.years');
+
     // General reviews routes
     Route::get('/reviews', [ReviewController::class, 'general_index'])->name('reviews.general.index');
     Route::get('/reviews/{review}', [ReviewController::class, 'general_show'])->name('reviews.general.show');

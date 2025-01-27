@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Director;
+use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\User;
 use App\Notifications\CreatedMovieNotification;
@@ -219,7 +221,7 @@ class MovieControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_movie_release_date_must_be_in_the_format_d_m_Y()
+    public function test_movie_release_date_must_be_in_the_format_Y_m_d()
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
@@ -228,7 +230,7 @@ class MovieControllerTest extends TestCase
 
         $movieData = Movie::factory()->make()->toArray();
 
-        $movieData['release_date'] = now()->format('Y-m-d');
+        $movieData['release_date'] = now()->format('d-m-Y');
 
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
 
@@ -400,6 +402,195 @@ class MovieControllerTest extends TestCase
         $response = $this->get("/api/movies/$movie->id");
 
         $response->assertStatus(401);
+    }
+
+    public function test_admin_user_can_filter_movies_by_director()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $director = Director::factory()->create();
+
+        Movie::factory(5)->create(['director_id' => $director->id]);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/directors');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_filter_movies_by_genre()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $genre = Genre::factory()->create();
+
+        Movie::factory(5)->create(['genre_id' => $genre->id]);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/genres');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_filter_movies_by_years()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $years = [2021, 2020, 2019, 2018, 2017];
+
+        foreach ($years as $year) {
+            Movie::factory()->create(['release_date' => now()->setYear($year)]);
+        }
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/years');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_filter_movies_by_director_and_genre_and_years()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $director = Director::factory()->create();
+        $genre = Genre::factory()->create();
+
+        Movie::factory(5)->create(['director_id' => $director->id, 'genre_id' => $genre->id]);
+
+        $years = [2021, 2020, 2019, 2018, 2017];
+
+        foreach ($years as $year) {
+            Movie::factory()->create(['release_date' => now()->year($year), 'director_id' => $director->id, 'genre_id' => $genre->id]);
+        }
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/directors');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/genres');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/years');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_sort_movies_by_title_asc_and_desc()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=title');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=-title');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_sort_movies_by_release_date_asc_and_desc()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=release_date');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=-release_date');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_sort_movies_by_duration_asc_and_desc()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=duration');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=-duration');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_sort_movies_by_rating_average_asc_and_desc()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=rating_average');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=-rating_average');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_sort_movies_by_reviews_count_asc_and_desc()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=reviews_count');
+
+        $response->assertStatus(200);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?sort=-reviews_count');
+
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_create_movie()

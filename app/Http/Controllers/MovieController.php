@@ -66,6 +66,33 @@ class MovieController extends Controller
             }
         }
     }
+    public function getDirectorsForFilter(): JsonResponse
+    {
+        $directors = Movie::distinct()
+            ->join('directors', 'movies.director_id', '=', 'directors.id')
+            ->pluck('directors.name', 'directors.id');
+
+        return response()->json($directors);
+    }
+
+    public function getGenresForFilter(): JsonResponse
+    {
+        $genres = Movie::distinct()
+            ->join('genres', 'movies.genre_id', '=', 'genres.id')
+            ->pluck('genres.name', 'genres.id');
+
+        return response()->json($genres);
+    }
+
+    public function getYears(): JsonResponse
+    {
+        $years = Movie::selectRaw('strftime("%Y", release_date) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        return response()->json($years);
+    }
 
     public function show(int $id): MovieResource
     {

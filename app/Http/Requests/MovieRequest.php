@@ -26,7 +26,7 @@ class MovieRequest extends FormRequest
             'title' => ['required', 'string', 'min:6', 'max:60', Rule::unique('movies')->ignore($this->movie)],
             'description' => ['required', 'string', 'min:10', 'max:1000'],
             'cover_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'release_date' => ['required', 'date', 'before:today', 'date_format:d-m-Y'],
+            'release_date' => ['required', 'date', 'before:today', 'date_format:Y-m-d'],
             'trailer_url' => ['required', 'url'],
             'duration' => ['required', 'integer'],
         ];
