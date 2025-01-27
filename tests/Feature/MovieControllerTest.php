@@ -593,6 +593,38 @@ class MovieControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_admin_user_can_search_movies_by_title()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/search?search=' . $movies[0]->title);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_user_can_autocomplete_movies_by_title()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        Movie::factory(5)->create();
+
+        $movies = Movie::factory(5)->create();
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/search/auto-complete?search=' . $movies[0]->title);
+
+        $response->assertStatus(200);
+    }
+
     public function test_admin_can_create_movie()
     {
         Notification::fake();

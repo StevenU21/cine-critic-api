@@ -94,6 +94,31 @@ class MovieController extends Controller
         return response()->json($years);
     }
 
+    public function search(Request $request): AnonymousResourceCollection
+    {
+        $this->authorize('viewAny', Movie::class);
+
+        $query = Movie::with(['genre', 'director', 'ratingAverage', 'reviewsCount'])
+            ->where('title', 'like', '%' . $request->search . '%');
+
+        $perPage = $request->get('per_page', 10);
+        $movies = $query->paginate($perPage);
+
+        return MovieResource::collection($movies);
+    }
+
+    public function autocomplete(Request $request): JsonResponse
+    {
+        $this->authorize('viewAny', Movie::class);
+        
+        $movies = Movie::where('title', 'like', '%' . $request->search . '%')
+            ->limit(10)
+            ->get()
+            ->pluck('title');
+
+        return response()->json($movies);
+    }
+
     public function show(int $id): MovieResource
     {
         $movie = Movie::findOrFailCustom($id);

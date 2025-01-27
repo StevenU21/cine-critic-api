@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Movie routes
     Route::put('/movies/{movie}', [MovieController::class, 'update'])->name('movies.update');
+    Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search');
+    Route::get('/movies/search/auto-complete', [MovieController::class, 'autocomplete'])->name('movies.auto-complete');
     Route::apiResource('/movies', MovieController::class)->except(['update']);
 
     // Filtered movie routes
