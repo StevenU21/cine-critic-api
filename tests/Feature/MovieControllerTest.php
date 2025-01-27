@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Movie;
 use App\Models\User;
+use App\Notifications\CreatedMovieNotification;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class MovieControllerTest extends TestCase
@@ -415,6 +417,29 @@ class MovieControllerTest extends TestCase
         $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
 
         $response->assertStatus(201);
+    }
+
+    public function test_it_notifies_all_users_when_a_movie_is_created()
+    {
+        Notification::fake();
+
+        $admin = User::factory()->create();
+
+        $admin->assignRole('admin');
+
+        $token = $admin->createToken('auth_token')->plainTextToken;
+
+        $users = User::factory()->count(3)->create();
+
+        $movieData = Movie::factory()->make()->toArray();
+
+        $movieData['cover_image'] = UploadedFile::fake()->image('cover_image.jpg');
+
+        $response = $this->withHeader('Authorization', "Bearer $token")->post('/api/movies', $movieData);
+
+        $response->assertStatus(201);
+
+        Notification::assertSentTo($users, CreatedMovieNotification::class);
     }
 
     public function test_moderator_cant_create_movie()
