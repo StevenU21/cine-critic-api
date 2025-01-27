@@ -21,7 +21,7 @@ class NotificationResource extends JsonResource
             'user_name' => $this->data['user_name'],
             'message' => $this->data['message'],
             'movie' => $this->data['movie_id'],
-            'read_at' => $this->read_at->format('Y-m-d H:i:s'),
+            'read_at' => $this->read_at ? $this->read_at->format('Y-m-d H:i:s') : null,
             'created_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
             'updated_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->updated_at->format('Y-m-d H:i:s')),
         ];

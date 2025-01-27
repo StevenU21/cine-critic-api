@@ -32,18 +32,22 @@ class NotificationController extends Controller
         $user->unreadNotifications->markAsRead();
     }
 
-    public function destroy(Request $request): void
+    public function destroy(string $id)
     {
         $user = auth()->user();
-        $notification = $user->notifications()->where('id', $request->id)->first();
+        $notification = $user->notifications()->where('id', $id)->first();
         if ($notification) {
             $notification->delete();
         }
+
+        return response()->json(null, 204);
     }
 
-    public function destroyAll(): void
+    public function destroyAll()
     {
         $user = auth()->user();
         $user->notifications()->delete();
+
+        return response()->json(null, 204);
     }
 }
