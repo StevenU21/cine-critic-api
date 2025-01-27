@@ -22,6 +22,10 @@ class MovieController extends Controller
     {
         $this->authorize('viewAny', Movie::class);
 
+        if ($request->has('search')) {
+            return $this->search($request);
+        }
+
         $query = Movie::with(['genre', 'director', 'ratingAverage', 'reviewsCount']);
 
         if ($request->has('genre')) {
@@ -37,16 +41,37 @@ class MovieController extends Controller
             $query->whereYear('release_date', $year);
         }
 
-        if ($request->has('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
-
         $this->applySorting($query, $request);
 
         $perPage = $request->get('per_page', 10);
         $movies = $query->paginate($perPage);
 
         return MovieResource::collection($movies);
+    }
+
+    public function search(Request $request): AnonymousResourceCollection
+    {
+        $this->authorize('viewAny', Movie::class);
+
+        $query = Movie::with(['genre', 'director', 'ratingAverage', 'reviewsCount'])
+            ->where('title', 'like', '%' . $request->search . '%');
+
+        $perPage = $request->get('per_page', 10);
+        $movies = $query->paginate($perPage);
+
+        return MovieResource::collection($movies);
+    }
+
+    public function autocomplete(Request $request): JsonResponse
+    {
+        $this->authorize('viewAny', Movie::class);
+
+        $movies = Movie::where('title', 'like', '%' . $request->search . '%')
+            ->limit(10)
+            ->get()
+            ->pluck('title');
+
+        return response()->json($movies);
     }
 
     private function applySorting($query, Request $request)
@@ -96,31 +121,6 @@ class MovieController extends Controller
             ->pluck('year');
 
         return response()->json($years);
-    }
-
-    public function search(Request $request): AnonymousResourceCollection
-    {
-        $this->authorize('viewAny', Movie::class);
-
-        $query = Movie::with(['genre', 'director', 'ratingAverage', 'reviewsCount'])
-            ->where('title', 'like', '%' . $request->search . '%');
-
-        $perPage = $request->get('per_page', 10);
-        $movies = $query->paginate($perPage);
-
-        return MovieResource::collection($movies);
-    }
-
-    public function autocomplete(Request $request): JsonResponse
-    {
-        $this->authorize('viewAny', Movie::class);
-
-        $movies = Movie::where('title', 'like', '%' . $request->search . '%')
-            ->limit(10)
-            ->get()
-            ->pluck('title');
-
-        return response()->json($movies);
     }
 
     public function show(int $id): MovieResource
