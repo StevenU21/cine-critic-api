@@ -21,6 +21,7 @@ class GenreResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'created_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
+            'updated_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->updated_at->format('Y-m-d H:i:s')),
         ];
     }
 }
