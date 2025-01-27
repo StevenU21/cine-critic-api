@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('description');
             $table->string('cover_image');
-            $table->string('release_date');
+            $table->date('release_date');
             $table->string('trailer_url');
             $table->integer('duration');
 

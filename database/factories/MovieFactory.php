@@ -22,7 +22,7 @@ class MovieFactory extends Factory
             'title' => fake()->sentence(3),
             'description' => fake()->sentence(6),
             'cover_image' => fake()->imageUrl(),
-            'release_date' => fake()->date('d-m-Y'),
+            'release_date' => fake()->date(),
             'trailer_url' => fake()->url(),
             'duration' => fake()->randomElement([90, 120, 150, 180]),
             'director_id' => Director::inRandomOrder()->first()->id,
