@@ -299,7 +299,6 @@ class MovieControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-
     public function test_admin_user_can_view_movie_list()
     {
         Movie::factory(10)->create();
@@ -405,6 +404,8 @@ class MovieControllerTest extends TestCase
 
     public function test_admin_can_create_movie()
     {
+        Notification::fake();
+
         $user = User::factory()->create();
         $user->assignRole('admin');
 
