@@ -7,6 +7,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Movie;
 use App\Models\User;
+use Illuminate\Broadcasting\Channel;
 
 class CreatedMovieNotification extends Notification
 {
@@ -60,5 +61,15 @@ class CreatedMovieNotification extends Notification
             'message' => 'The movie ' . $this->movie->title . ' has been created',
             'movie_id' => $this->movie->id,
         ];
+    }
+
+    public function broadcastOn(): Channel
+    {
+        return new Channel('notifications.' . $this->user->id);
+    }
+
+    public function broadcastType(): string
+    {
+        return 'created';
     }
 }
