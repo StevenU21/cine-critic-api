@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MovieRequest;
 use App\Models\Movie;
 use App\Http\Resources\MovieResource;
+use App\Models\User;
+use App\Notifications\CreatedMovieNotification;
 use App\Services\ImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
@@ -44,6 +46,12 @@ class MovieController extends Controller
         if ($request->hasFile('cover_image')) {
             $movie->cover_image = $imageService->storeImage($request->file('cover_image'), $movie->title, $movie->id, 'movies_images');
             $movie->save();
+        }
+
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $user->notify(new CreatedMovieNotification($movie, $user));
         }
 
         return new MovieResource($movie);
