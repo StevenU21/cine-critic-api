@@ -42,15 +42,15 @@ class Movie extends Model
     public function ratingAverage(): HasOne
     {
         return $this->hasOne(Review::class)
-                    ->selectRaw('movie_id, AVG(rating) as aggregate')
-                    ->groupBy('movie_id');
+            ->selectRaw('movie_id, ROUND(AVG(rating), 2) as aggregate')
+            ->groupBy('movie_id');
     }
 
     public function reviewsCount(): HasOne
     {
         return $this->hasOne(Review::class)
-                    ->selectRaw('movie_id, COUNT(*) as aggregate')
-                    ->groupBy('movie_id');
+            ->selectRaw('movie_id, COUNT(*) as aggregate')
+            ->groupBy('movie_id');
     }
 
     public function getImageAttribute(): string
