@@ -50,7 +50,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Notification routes
     Route::prefix('/notifications')->name('notifications.')->group(function () {
         Route::get('', [NotificationController::class, 'index'])->name('index');
-        Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
         Route::put('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('markAsRead');
         Route::put('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
         Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');

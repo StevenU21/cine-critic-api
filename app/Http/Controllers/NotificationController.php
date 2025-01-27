@@ -16,18 +16,11 @@ class NotificationController extends Controller
         return NotificationResource::collection($notifications);
     }
 
-    public function show(Request $request): NotificationResource
+    public function markAsRead(string $id): void
     {
         $user = auth()->user();
-        $notification = $user->notifications()->where('id', $request->id)->first();
+        $notification = $user->notifications()->where('id', $id)->first();
 
-        return new NotificationResource($notification);
-    }
-
-    public function markAsRead(Request $request): void
-    {
-        $user = auth()->user();
-        $notification = $user->notifications()->where('id', $request->id)->first();
         if ($notification) {
             $notification->markAsRead();
         }
