@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $user = auth()->user();
-        $notifications = $user->notifications()->latest()->get();
+        $notifications = $user->notifications()->latest()->paginate(10);
 
         return NotificationResource::collection($notifications);
     }
