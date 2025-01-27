@@ -417,7 +417,7 @@ class MovieControllerTest extends TestCase
 
         Movie::factory(5)->create(['director_id' => $director->id]);
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/directors');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?director=' . $director->id);
 
         $response->assertStatus(200);
     }
@@ -435,7 +435,7 @@ class MovieControllerTest extends TestCase
 
         Movie::factory(5)->create(['genre_id' => $genre->id]);
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/genres');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?genre=' . $genre->id);
 
         $response->assertStatus(200);
     }
@@ -455,7 +455,7 @@ class MovieControllerTest extends TestCase
             Movie::factory()->create(['release_date' => now()->setYear($year)]);
         }
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/years');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?year=' . $years[0]);
 
         $response->assertStatus(200);
     }
@@ -480,15 +480,7 @@ class MovieControllerTest extends TestCase
             Movie::factory()->create(['release_date' => now()->year($year), 'director_id' => $director->id, 'genre_id' => $genre->id]);
         }
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/directors');
-
-        $response->assertStatus(200);
-
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/genres');
-
-        $response->assertStatus(200);
-
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies/filters/years');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/movies?director=' . $director->id . '&genre=' . $genre->id . '&year=' . $years[0]);
 
         $response->assertStatus(200);
     }

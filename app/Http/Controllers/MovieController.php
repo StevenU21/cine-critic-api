@@ -37,6 +37,10 @@ class MovieController extends Controller
             $query->whereYear('release_date', $year);
         }
 
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
         $this->applySorting($query, $request);
 
         $perPage = $request->get('per_page', 10);
@@ -110,7 +114,7 @@ class MovieController extends Controller
     public function autocomplete(Request $request): JsonResponse
     {
         $this->authorize('viewAny', Movie::class);
-        
+
         $movies = Movie::where('title', 'like', '%' . $request->search . '%')
             ->limit(10)
             ->get()
