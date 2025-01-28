@@ -6,7 +6,7 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
-class RoleTest extends TestCase
+class RoleControllerTest extends TestCase
 {
     public function test_admin_user_can_view_role_list()
     {

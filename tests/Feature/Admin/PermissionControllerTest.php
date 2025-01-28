@@ -5,7 +5,7 @@ namespace Tests\Feature\Admin;
 use Tests\TestCase;
 use App\Models\User;
 
-class PermissionTest extends TestCase
+class PermissionControllerTest extends TestCase
 {
     public function test_admin_user_can_view_role_list()
     {
