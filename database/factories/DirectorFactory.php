@@ -19,7 +19,7 @@ class DirectorFactory extends Factory
         return [
             'name' => fake()->name(),
             'biography' => fake()->sentence(6),
-            'image' => fake()->imageUrl(),
+            'image' => 'https://randomuser.me/api/portraits/men/15.jpg',
             'birth_date' => fake()->date('d-m-Y'),
             'nationality' => fake()->country(),
         ];

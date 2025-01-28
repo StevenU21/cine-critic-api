@@ -52,6 +52,7 @@ class DashboardController extends Controller
                     'title' => $movie->title,
                     'average_rating' => $movie->ratingAverage->aggregate ?? 0,
                     'reviews_count' => $movie->reviewsCount->count ?? 0,
+                    'release_date' => $movie->release_date,
                 ];
             });
 
@@ -69,6 +70,7 @@ class DashboardController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'reviews_count' => $user->reviews_count,
+                    'created_at' => $user->created_at->format('Y-m-d'),
                 ];
             });
 
@@ -116,6 +118,7 @@ class DashboardController extends Controller
                 return [
                     'title' => $movie->title,
                     'release_date' => $movie->release_date,
+                    'created_at' => $movie->created_at->format('Y-m-d'),
                 ];
             });
 
@@ -134,6 +137,7 @@ class DashboardController extends Controller
                     'content' => $review->content,
                     'rating' => $review->rating,
                     'user' => $review->user->name,
+                    'created_at' => $review->created_at->format('Y-m-d'),
                 ];
             });
 
@@ -149,6 +153,7 @@ class DashboardController extends Controller
                 return [
                     'name' => $user->name,
                     'email' => $user->email,
+                    'created_at' => $user->created_at->format('Y-m-d'),
                 ];
             });
 

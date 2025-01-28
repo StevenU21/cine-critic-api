@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
 
         $AdminUser = User::factory()->create([
             'name' => 'Admin',
+            'username' => 'admin',
+            'image' => 'https://randomuser.me/api/portraits/men/68.jpg',
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
         ]);
@@ -27,6 +29,8 @@ class DatabaseSeeder extends Seeder
 
         $ModeratorUser = User::factory()->create([
             'name' => 'Moderator',
+            'username' => 'moderator',
+            'image' => 'https://randomuser.me/api/portraits/men/69.jpg',
             'email' => 'moderator@example.com',
             'password' => bcrypt('password'),
         ]);
@@ -34,6 +38,8 @@ class DatabaseSeeder extends Seeder
 
         $ReviewerUser = User::factory()->create([
             'name' => 'Reviewer',
+            'username' => 'reviewer',
+            'image' => 'https://randomuser.me/api/portraits/men/70.jpg',
             'email' => 'reviewer@example.com',
             'password' => bcrypt('password'),
         ]);

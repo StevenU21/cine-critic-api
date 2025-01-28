@@ -21,7 +21,7 @@ class MovieFactory extends Factory
         return [
             'title' => fake()->sentence(3),
             'description' => fake()->sentence(6),
-            'cover_image' => fake()->imageUrl(),
+            'cover_image' => 'https://marketplace.canva.com/EAFz3ee923I/1/0/1600w/canva-orange-yellow-black-artistic-fiery-sky-and-young-man-silhouette-album-cover-hrnla8UeuYU.jpg',
             'release_date' => fake()->date('Y-m-d'),
             'trailer_url' => fake()->url(),
             'duration' => fake()->randomElement([90, 120, 150, 180]),
