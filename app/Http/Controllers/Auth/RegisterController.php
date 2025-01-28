@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use App\Models\User;
 
-
 class RegisterController extends Controller
 {
     public function register(Request $request): JsonResponse
