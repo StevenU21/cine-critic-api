@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -77,5 +78,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/permissions/{user}/list-permission', [PermissionController::class, 'getUserPermissions'])->name('permissions.list-permission');
         Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'assignPermission'])->name('permissions.give-permission');
         Route::delete('/permissions/{user}/revoke-permission', [PermissionController::class, 'revokePermission'])->name('permissions.revoke-permission');
+
+        // Dashboard routes
+        Route::get('/dashboard/counts', [DashboardController::class, 'counts'])->name('counts');
+        Route::get('/dashboard/top-rated-movies', [DashboardController::class, 'topRatedMovies'])->name('top-rated-movies');
+        Route::get('/dashboard/top-users', [DashboardController::class, 'topUsers'])->name('top-users');
+        Route::get('/dashboard/top-genres', [DashboardController::class, 'topGenres'])->name('top-genres');
+        Route::get('/dashboard/top-directors', [DashboardController::class, 'topDirectors'])->name('top-directors');
+        Route::get('/dashboard/recent-movies', [DashboardController::class, 'recentMovies'])->name('recent-movies');
+        Route::get('/dashboard/recent-reviews', [DashboardController::class, 'recentReviews'])->name('recent-reviews');
+        Route::get('/dashboard/recent-users', [DashboardController::class, 'recentUsers'])->name('recent-users');
     });
 });
