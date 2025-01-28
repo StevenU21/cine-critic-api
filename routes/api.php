@@ -11,6 +11,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -64,9 +65,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('', [NotificationController::class, 'destroyAll'])->name('destroyAll');
     });
 
-    // User routes
+    // Admin User routes
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+
+    // User Profile routes
+    Route::get('/user-profile', [UserProfileController::class, 'index'])->name('user-profile');
 
     // Admin routes
     Route::middleware('role:admin')->prefix('/admin')->name('admin.')->group(function () {
