@@ -66,7 +66,7 @@ class DashboardControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-        public function test_admin_user_can_view_top_rated_movies_filter_by_year()
+    public function test_admin_user_can_view_top_rated_movies_filter_by_year()
     {
         $user = User::factory()->create();
 
@@ -78,7 +78,7 @@ class DashboardControllerTest extends TestCase
         $endDate = '2023-12-31';
 
         $response = $this->withHeader('Authorization', "Bearer $token")
-                         ->get('/api/admin/dashboard/top-rated-movies?start_date=' . $startDate . '&end_date=' . $endDate);
+            ->get('/api/admin/dashboard/top-rated-movies?start_date=' . $startDate . '&end_date=' . $endDate);
 
         $response->assertStatus(200);
     }
