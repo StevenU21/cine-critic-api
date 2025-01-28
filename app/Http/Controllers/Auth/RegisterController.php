@@ -17,23 +17,15 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:60'],
-            'username' => ['required', 'string', 'min:3', 'max:20', Rule::unique('users')],
-            'image' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,png,jpg,webp'],
             'email' => ['required', 'string', 'email', 'max:20', Rule::unique('users')->ignore($request->user())],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-        if ($request->hasFile('image')) {
-            $user->image = $imageService->storeImage($request->file('image'), $request->username, $user->id, 'profile_images');
-            $user->save();
-        }
 
         $user->assignRole('reviewer');
 

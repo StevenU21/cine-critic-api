@@ -31,5 +31,4 @@ class UserResource extends JsonResource
             'created_at' => $this->when($user && $user->hasRole('admin') && $request->has('include_timestamps'), $this->created_at->format('Y-m-d H:i:s')),
         ];
     }
-
 }

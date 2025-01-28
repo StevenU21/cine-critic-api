@@ -23,8 +23,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'username',
-        'image',
         'email',
         'password',
     ];
@@ -55,10 +53,5 @@ class User extends Authenticatable
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
-    }
-
-    public function getImageAttribute(): string
-    {
-        return asset('storage/' . $this->image);
     }
 }
