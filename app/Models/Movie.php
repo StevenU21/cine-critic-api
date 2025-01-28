@@ -29,7 +29,7 @@ class Movie extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['title', 'description', 'cover_image', 'release_date', 'trailer_url', 'duration', 'director_id', 'genre_id']);
+            ->logOnly(['title', 'description', 'cover_image', 'release_date', 'trailer_url', 'duration', 'director.name', 'genre.name']);
     }
 
     public function genre(): BelongsTo

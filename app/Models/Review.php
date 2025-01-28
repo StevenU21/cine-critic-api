@@ -23,7 +23,7 @@ class Review extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['content', 'rating', 'movie_id', 'user_id']);
+        ->logOnly(['content', 'rating', 'movie.title', 'user.name']);
     }
 
     public function movie(): BelongsTo
