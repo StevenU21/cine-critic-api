@@ -71,6 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // User Profile routes
     Route::get('/user-profile', [UserProfileController::class, 'index'])->name('user-profile');
+    Route::get('/user-profile/{user}', [UserProfileController::class, 'show'])->name('user-profile.show');
 
     // Admin routes
     Route::middleware('role:admin')->prefix('/admin')->name('admin.')->group(function () {

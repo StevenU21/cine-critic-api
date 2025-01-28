@@ -17,6 +17,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = [
             'create genres', 'read genres', 'update genres', 'delete genres',
             'create users', 'read users', 'update users', 'delete users',
+            'read user_profiles',
             'assign roles', 'read roles' , 'assign permissions', 'revoke permissions',
             'create directors', 'read directors', 'update directors', 'delete directors',
             'create movies', 'read movies', 'update movies', 'delete movies',
@@ -39,13 +40,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $moderatorRole->givePermissionTo([
             'read genres', 'read users', 'update users', 'delete users',
+            'read user_profiles',
             'read directors', 'update directors', 'read movies', 'update movies',
             'read ratings', 'delete ratings',
             'read reviews', 'update reviews', 'delete reviews',
         ]);
 
         $reviewerRole->givePermissionTo([
-            'read genres', 'read users',
+            'read genres', 'read users', 'read user_profiles',
             'read directors', 'read movies',
             'create ratings', 'read ratings', 'update ratings', 'delete ratings',
             'create reviews', 'read reviews', 'update reviews', 'delete reviews',

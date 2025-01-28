@@ -14,6 +14,7 @@ use App\Policies\PermissionPolicy;
 use App\Policies\ReviewPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
+use App\Policies\UserProfilePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Models\Permission;
@@ -44,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Director::class, DirectorPolicy::class);
         Gate::policy(Movie::class, MoviePolicy::class);
         Gate::policy(Review::class, ReviewPolicy::class);
+        Gate::policy(User::class, UserProfilePolicy::class);
     }
 }
