@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Traits\FindModelOrFail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class Movie extends Model
 {
-    use HasFactory, FindModelOrFail, LogsActivity;
+    use HasFactory, FindModelOrFail;
 
     protected $fillable = [
         'title',
@@ -25,12 +23,6 @@ class Movie extends Model
         'director_id',
         'genre_id',
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logOnly(['title', 'description', 'cover_image', 'release_date', 'trailer_url', 'duration', 'director.name', 'genre.name']);
-    }
 
     public function genre(): BelongsTo
     {

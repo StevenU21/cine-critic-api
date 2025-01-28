@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Traits\FindModelOrFail;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class Review extends Model
 {
-    use HasFactory, FindModelOrFail, LogsActivity;
+    use HasFactory, FindModelOrFail;
 
     protected $fillable = [
         'content',
@@ -19,12 +17,6 @@ class Review extends Model
         'movie_id',
         'user_id',
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['content', 'rating', 'movie.title', 'user.name']);
-    }
 
     public function movie(): BelongsTo
     {

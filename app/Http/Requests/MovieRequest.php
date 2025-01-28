@@ -56,7 +56,7 @@ class MovieRequest extends FormRequest
             'release_date.required' => 'The release date field is required.',
             'release_date.date' => 'The release date field must be a date.',
             'release_date.before' => 'The release date field must be a date before today.',
-            'release_date.date_format' => 'The release date field must be in the format: d-m-Y.',
+            'release_date.date_format' => 'The release date field must be in the format: Y-m-d.',
             'trailer_url.required' => 'The trailer URL field is required.',
             'trailer_url.url' => 'The trailer URL field must be a valid URL.',
             'duration.required' => 'The duration field is required.',

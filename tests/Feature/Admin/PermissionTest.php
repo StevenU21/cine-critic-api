@@ -15,7 +15,7 @@ class PermissionTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles/permissions');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/permissions');
 
         $response->assertStatus(200);
     }
@@ -28,7 +28,7 @@ class PermissionTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles/permissions');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/permissions');
 
         $response->assertStatus(403);
     }
@@ -41,14 +41,14 @@ class PermissionTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles/permissions');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/permissions');
 
         $response->assertStatus(403);
     }
 
     public function test_unauthenticated_user_cant_view_role_list()
     {
-        $response = $this->get('/api/roles/permissions');
+        $response = $this->get('/api/admin/permissions');
 
         $response->assertStatus(401);
     }
@@ -61,7 +61,7 @@ class PermissionTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get("/api/roles/permissions/{$user->id}/list-permission");
+        $response = $this->withHeader('Authorization', "Bearer $token")->get("/api/admin/permissions/{$user->id}/list-permission");
 
         $response->assertStatus(200);
     }
@@ -74,7 +74,7 @@ class PermissionTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get("/api/roles/permissions/{$user->id}/list-permission");
+        $response = $this->withHeader('Authorization', "Bearer $token")->get("/api/admin/permissions/{$user->id}/list-permission");
 
         $response->assertStatus(403);
     }
@@ -87,7 +87,7 @@ class PermissionTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get("/api/roles/permissions/{$user->id}/list-permission");
+        $response = $this->withHeader('Authorization', "Bearer $token")->get("/api/admin/permissions/{$user->id}/list-permission");
 
         $response->assertStatus(403);
     }
@@ -96,7 +96,7 @@ class PermissionTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->get("/api/roles/permissions/{$user->id}/list-permission");
+        $response = $this->get("/api/admin/permissions/{$user->id}/list-permission");
 
         $response->assertStatus(401);
     }
@@ -112,7 +112,7 @@ class PermissionTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->post("/api/roles/permissions/{$user->id}/give-permission", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->post("/api/admin/permissions/{$user->id}/give-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -134,7 +134,7 @@ class PermissionTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->post("/api/roles/permissions/{$user->id}/give-permission", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->post("/api/admin/permissions/{$user->id}/give-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -156,7 +156,7 @@ class PermissionTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->post("/api/roles/permissions/{$user->id}/give-permission", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->post("/api/admin/permissions/{$user->id}/give-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -172,7 +172,7 @@ class PermissionTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->post("/api/roles/permissions/{$user->id}/give-permission", [
+        $response = $this->post("/api/admin/permissions/{$user->id}/give-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -196,7 +196,7 @@ class PermissionTest extends TestCase
         $user->givePermissionTo('create genres');
         $user->givePermissionTo('update genres');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/roles/permissions/{$user->id}/revoke-permission", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/admin/permissions/{$user->id}/revoke-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -220,7 +220,7 @@ class PermissionTest extends TestCase
         $user->givePermissionTo('create genres');
         $user->givePermissionTo('update genres');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/roles/permissions/{$user->id}/revoke-permission", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/admin/permissions/{$user->id}/revoke-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -244,7 +244,7 @@ class PermissionTest extends TestCase
         $user->givePermissionTo('create genres');
         $user->givePermissionTo('update genres');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/roles/permissions/{$user->id}/revoke-permission", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->delete("/api/admin/permissions/{$user->id}/revoke-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 
@@ -262,7 +262,7 @@ class PermissionTest extends TestCase
         $user->givePermissionTo('create genres');
         $user->givePermissionTo('update genres');
 
-        $response = $this->delete("/api/roles/permissions/{$user->id}/revoke-permission", [
+        $response = $this->delete("/api/admin/permissions/{$user->id}/revoke-permission", [
             'permission' => ['create genres', 'update genres'],
         ]);
 

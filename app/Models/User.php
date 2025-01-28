@@ -8,15 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 use App\Traits\FindModelOrFail;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasRoles, FindModelOrFail, LogsActivity;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles, FindModelOrFail;
 
     /**
      * The attributes that are mass assignable.
@@ -28,12 +26,6 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logOnly(['name', 'email']);
-    }
 
     /**
      * The attributes that should be hidden for serialization.

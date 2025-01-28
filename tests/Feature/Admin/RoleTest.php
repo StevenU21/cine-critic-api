@@ -16,7 +16,7 @@ class RoleTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/roles');
 
         $response->assertStatus(200);
     }
@@ -29,7 +29,7 @@ class RoleTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/roles');
 
         $response->assertStatus(403);
     }
@@ -42,25 +42,25 @@ class RoleTest extends TestCase
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/roles');
 
         $response->assertStatus(403);
     }
 
     public function test_unauthenticated_user_cant_view_role_list()
     {
-        $response = $this->get('/api/roles');
+        $response = $this->get('/api/admin/roles');
 
         $response->assertStatus(401);
     }
 
-    public function test_roles_list_should_return_all_roles()
+    public function test_admin_list_should_return_all_roles()
     {
         $admin = User::factory()->create();
         $admin->assignRole('admin');
         $token = $admin->createToken('auth_token')->plainTextToken;
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/roles');
+        $response = $this->withHeader('Authorization', "Bearer $token")->get('/api/admin/roles');
 
         $response->assertJson([
             1 => 'admin',
@@ -86,7 +86,7 @@ class RoleTest extends TestCase
         $this->assertNotNull($roleModerator);
         $this->assertNotNull($roleReviewer);
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => 'moderator',
         ]);
 
@@ -115,7 +115,7 @@ class RoleTest extends TestCase
         $this->assertNotNull($roleModerator);
         $this->assertNotNull($roleReviewer);
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => ['moderator', 'reviewer'],
         ]);
 
@@ -136,7 +136,7 @@ class RoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => 'non-existing-role',
         ]);
 
@@ -157,7 +157,7 @@ class RoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => 'moderator',
         ]);
 
@@ -177,7 +177,7 @@ class RoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => 'moderator',
         ]);
 
@@ -192,7 +192,7 @@ class RoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => 'moderator',
         ]);
 
@@ -212,7 +212,7 @@ class RoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('reviewer');
 
-        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/roles/{$user->id}/assign-role", [
+        $response = $this->withHeader('Authorization', "Bearer $token")->putJson("/api/admin/roles/{$user->id}/assign-role", [
             'role' => 'moderator',
         ]);
 

@@ -68,9 +68,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
     // Admin routes
-    Route::middleware('role:admin')->prefix('/roles')->name('roles.')->group(function () {
-        Route::get('', [RoleController::class, 'index'])->name('index');
-        Route::put('/{user}/assign-role', [RoleController::class, 'assignRole'])->name('assign-role');
+    Route::middleware('role:admin')->prefix('/admin')->name('admin.')->group(function () {
+        // Role routes
+        Route::get('/roles', [RoleController::class, 'index'])->name('index');
+        Route::put('/roles/{user}/assign-role', [RoleController::class, 'assignRole'])->name('assign-role');
+        // Permission routes
         Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
         Route::get('/permissions/{user}/list-permission', [PermissionController::class, 'getUserPermissions'])->name('permissions.list-permission');
         Route::post('/permissions/{user}/give-permission', [PermissionController::class, 'assignPermission'])->name('permissions.give-permission');
