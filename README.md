@@ -1,156 +1,394 @@
-# ✨ CineCritic API ✨
+---
 
-CineCritic API es una API RESTful para gestionar una plataforma de reseñas de películas. Permite a los usuarios registrarse, iniciar sesión, buscar películas, escribir reseñas, calificar películas y ver estadísticas detalladas sobre las mismas. 
+# CineCritic-API
+
+Una API RESTful desarrollada en Laravel para la gestión de reseñas de películas, con autenticación utilizando Laravel Sanctum, control de roles de usuario (Admin, Moderator, Reviewer), manejo de excepciones personalizadas, uso de servicios, resources y policies, panel de administración con estadísticas, y gestión avanzada de roles y permisos.
+
+## Tabla de Contenidos
+
+- [Características](#características)
+- [Requisitos](#requisitos)
+- [Instalación](#instalación)
+- [Configuración](#configuración)
+- [Endpoints](#endpoints)
+  - [Autenticación](#autenticación)
+  - [Géneros (Genres)](#géneros-genres)
+  - [Directores (Directors)](#directores-directors)
+  - [Películas (Movies)](#películas-movies)
+  - [Reseñas (Reviews)](#reseñas-reviews)
+  - [Notificaciones](#notificaciones)
+  - [Usuarios y Perfiles](#usuarios-y-perfiles)
+  - [Administración](#administración)
+- [Validaciones](#validaciones)
+- [Recursos y Policies](#recursos-y-policies)
+- [Servicios Adicionales](#servicios-adicionales)
+- [Roles de Usuario](#roles-de-usuario)
 
 ---
 
-## 📊 Características
+## Características
 
-### 🔐 **Autenticación y usuarios**
-
-- Inicio de sesión y cierre de sesión con tokens (Laravel Sanctum).
-- Roles de usuario: admin, moderator y reviewer.
-
-### 🎥 **Gestor de películas**
-
-- CRUD para películas.
-- Búsqueda y filtros por título, género o año.
-- Autocompletado de títulos de películas.
-
-### 🔹 **Reseñas de películas**
-
-- Publicación de reseñas por parte de los usuarios.
-- Edición y eliminación de reseñas propias.
-- Calificaciones de películas (1 a 5 estrellas).
-- Cálculo del promedio de calificaciones para cada película.
-- Listado general de reseñas.
-- Listado de reseñas por película.
-
-### 📢 **Notificaciones**
-
-- Sistema de notificaciones en tiempo real:
-  - Los usuarios reciben una notificación cuando se agrega una nueva película al catálogo.
-  - Los usuarios pueden marcar notificaciones como leídas o eliminarlas.
-
-### 🔍 **Estadísticas**
-
-- Películas más populares (más reseñadas o mejor calificadas).
-- Contador de reseñas realizadas por usuario.
-- Listado de los mejores usuarios, géneros y directores.
-- Listado de las películas, reseñas y usuarios más recientes.
-
-### 🛠️ **Características del Administrador**
-
-- Gestión de usuarios:
-  - Listado de usuarios.
-  - Visualización de perfiles de usuario.
-- Gestión de roles:
-  - Asignación de roles a usuarios.
-- Gestión de permisos:
-  - Listado de permisos.
-  - Asignación y revocación de permisos a usuarios.
-- Panel de control:
-  - Contadores de estadísticas.
-  - Listado de películas mejor calificadas.
-  - Listado de usuarios más activos.
-  - Listado de géneros y directores más populares.
-  - Listado de películas, reseñas y usuarios más recientes.
-
-## 📄 Esquema de Base de Datos
-
-### Principales tablas:
-
-1. **Usuarios (`users`)**: Gestor de cuentas de usuario.
-2. **Películas (`movies`)**: Almacena información de las películas.
-3. **Géneros (`genres`)**: Lista de géneros disponibles.
-4. **Directores (`directors`)**: Lista de directores de cine.
-5. **Reseñas (`reviews`)**: Registra las reseñas de los usuarios.
-6. **Notificaciones (`Notifications`)**: Registrar notificaciones para cada usuario. 
+- **Autenticación** con Laravel Sanctum (registro, login y logout).
+- **Gestión de películas**, incluyendo búsqueda y filtros por directores, géneros y años.
+- **Gestión de reseñas** con creación, edición, y eliminación de reseñas para cada película.
+- **Gestión de géneros y directores** mediante endpoints CRUD.
+- **Notificaciones**: visualización, marcar como leídas y eliminación.
+- **Panel de administración (Dashboard)** con estadísticas como:
+  - Conteos generales.
+  - Top películas, usuarios, géneros y directores.
+  - Registros recientes.
+- **Gestión de roles y permisos** (Admin, Moderator, Reviewer).
+- Uso de **Resources** para formatear las respuestas.
+- Uso de **Policies** para la autorización de acciones.
+- **Manejo de excepciones personalizadas** para respuestas consistentes.
+- **Servicios** (por ejemplo, `ImageService`) para el procesamiento de imágenes.
 
 ---
 
-## 🚀 Tecnologías Usadas
+## Requisitos
 
-- **Laravel 11**: Framework para el desarrollo de la API.
-- **Sanctum**: Autenticación basada en tokens.
-- **MySQL/SQLite**: Base de datos relacional.
-- **Broadcasting**: Para notificaciones en tiempo real.
-- **Postman**: Pruebas de la API.
-- **Laravel Telescope**: Herramienta de depuración para el entorno local.
-- **Laravel Spatie/Permission**: Herramienta para la creacion y gestión de roles de usuarios y permisos.
-- **Faker PHP**: Creación de Datos de Prueba.
+- PHP 8.2
+- [Composer](https://getcomposer.org/)
+- [Laravel](https://laravel.com/) 11.x 
+- Base de datos MySQL, SQLite
 
 ---
 
-## 🔄 Instalación
+## Instalación
 
-### Requisitos previos:
-
-- PHP >= 8.2
-- Composer
-- MySQL/SQLITE
-- LARAGON/XAMPP
-- Laravel Reverb
-
-### Pasos
-
-1. Clona el repositorio:
+1. **Clona el repositorio:**
 
    ```bash
-   git clone  https://github.com/StevenU21/CineCritic-API.git
+   git clone https://github.com/StevenU21/CineCritic-API.git
    ```
 
-  ```bash
+   ```bash
    cd CineCritic-API
    ```
 
-2. Instala las dependencias:
+2. **Instala las dependencias de Composer:**
 
    ```bash
    composer install
    ```
 
-3. Copia el archivo `.env.example` a `.env` y configura tus variables de entorno:
+3. **Configura el archivo `.env`:**
+
+   Copia el archivo de ejemplo y configura tus variables de entorno:
 
    ```bash
    cp .env.example .env
-   ```
-
-4. Genera la clave de aplicación:
-
-   ```bash
    php artisan key:generate
    ```
 
-5. Configura la base de datos en el archivo `.env` y migra las tablas:
+4. **Realiza las migraciones y seeders (si los hay):**
+
    ```bash
-   php artisan migrate
+   php artisan migrate --seed
    ```
 
-6. Genera datos de prueba:
+5. **Instala Laravel Sanctum:**
+
    ```bash
-   php artisan db:seed
+   php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
    ```
 
-7. Inicia el servidor local:
+6. **Inicia el servidor de desarrollo:**
+
    ```bash
    php artisan serve
    ```
 
-8. Ejecuta los tests:
-   ```bash
-   php artisan test
-   ```
+---
 
-9. Accede a Laravel Telescope en el entorno local:
+## Configuración
 
-   Luego, visita [http://localhost:8000/telescope](http://localhost:8000/telescope).
+- **Autenticación:** La API utiliza Laravel Sanctum para manejar la autenticación de usuarios. Es importante configurar correctamente el middleware `auth:sanctum` para proteger las rutas.
+- **Roles y Permisos:** Se han definido roles de usuario (Admin, Moderator, Reviewer) y se utilizan policies para autorizar acciones específicas.
+- **Carga de imágenes:** Se utiliza un servicio (`Services/ImageService`) para la gestión de imágenes, el cual se encarga de validar y almacenar imágenes para directores, películas, etc.
 
-## 🌐 Recursos Adicionales
+---
 
-- [Laravel Sanctum Documentation](https://laravel.com/docs/11.x/sanctum)
-- [Laravel Broadcasting](https://laravel.com/docs/11.x/broadcasting)
-- [Postman](https://www.postman.com/)
-- [Laravel Telescope](https://laravel.com/docs/11.x/telescope)
+## Endpoints
+
+A continuación se muestra un resumen de los endpoints disponibles en la API. Todos los endpoints que requieren autenticación deben incluir el token generado durante el login en el encabezado de la petición.
+
+### Autenticación
+
+- **Registro de Usuario**
+
+  ```http
+  POST /api/register
+  ```
+
+  Endpoint para registrar nuevos usuarios.
+
+- **Login**
+
+  ```http
+  POST /api/login
+  ```
+
+  Endpoint para iniciar sesión.
+
+- **Logout**
+
+  ```http
+  POST /api/logout
+  ```
+
+  Endpoint para cerrar sesión. **Requiere autenticación.**
+
+### Géneros (Genres)
+
+- **Listado y Creación de Géneros**
+
+  ```http
+  GET /api/genres
+  POST /api/genres
+  GET /api/genres/{id}
+  DELETE /api/genres/{id}
+  ```
+
+- **Actualización de Género**
+
+  ```http
+  PUT /api/genres/{genre}
+  ```
+
+  *Nota: Se utiliza una ruta personalizada para la actualización.*
+
+### Directores (Directors)
+
+- **Listado y Creación de Directores**
+
+  ```http
+  GET /api/directors
+  POST /api/directors
+  GET /api/directors/{id}
+  DELETE /api/directors/{id}
+  ```
+
+- **Actualización de Director**
+
+  ```http
+  PUT /api/directors/{director}
+  ```
+
+### Películas (Movies)
+
+- **Operaciones CRUD**
+
+  ```http
+  GET /api/movies
+  POST /api/movies
+  GET /api/movies/{id}
+  DELETE /api/movies/{id}
+  ```
+
+- **Actualización de Película**
+
+  ```http
+  PUT /api/movies/{movie}
+  ```
+
+- **Búsqueda y Autocompletado**
+
+  ```http
+  GET /api/movies/search
+  GET /api/movies/search/auto-complete
+  ```
+
+- **Filtros para Películas**
+
+  ```http
+  GET /api/movies/filters/directors
+  GET /api/movies/filters/genres
+  GET /api/movies/filters/years
+  ```
+
+### Reseñas (Reviews)
+
+- **Reseñas Generales**
+
+  ```http
+  GET /api/reviews
+  GET /api/reviews/{review}
+  ```
+
+- **Reseñas por Película**
+
+  ```http
+  GET /api/reviews/movies/{movie}       // Listado de reseñas para una película.
+  POST /api/reviews/movies/{movie}      // Crear una reseña para una película.
+  PUT /api/reviews/movies/{movie}/{review} // Actualizar una reseña.
+  DELETE /api/reviews/{review}          // Eliminar una reseña.
+  ```
+
+### Notificaciones
+
+- **Listado y Gestión de Notificaciones**
+
+  ```http
+  GET /api/notifications
+  PUT /api/notifications/{notification}/mark-as-read
+  PUT /api/notifications/mark-all-as-read
+  DELETE /api/notifications/{notification}
+  DELETE /api/notifications
+  ```
+
+### Usuarios y Perfiles
+
+- **Usuarios (Acceso para Administradores)**
+
+  ```http
+  GET /api/users
+  GET /api/users/{user}
+  ```
+
+- **Perfil de Usuario**
+
+  ```http
+  GET /api/user-profile
+  GET /api/user-profile/{user}
+  ```
+
+### Administración (Rutas protegidas con rol `admin`)
+
+- **Gestión de Roles**
+
+  ```http
+  GET /api/admin/roles
+  PUT /api/admin/roles/{user}/assign-role
+  ```
+
+- **Gestión de Permisos**
+
+  ```http
+  GET /api/admin/permissions
+  GET /api/admin/permissions/{user}/list-permission
+  POST /api/admin/permissions/{user}/give-permission
+  DELETE /api/admin/permissions/{user}/revoke-permission
+  ```
+
+- **Dashboard y Estadísticas**
+
+  ```http
+  GET /api/admin/dashboard/counts
+  GET /api/admin/dashboard/top-rated-movies
+  GET /api/admin/dashboard/top-users
+  GET /api/admin/dashboard/top-genres
+  GET /api/admin/dashboard/top-directors
+  GET /api/admin/dashboard/recent-movies
+  GET /api/admin/dashboard/recent-reviews
+  GET /api/admin/dashboard/recent-users
+  ```
+
+---
+
+## Validaciones
+
+Se han creado Request classes para validar las entradas de los distintos endpoints. Algunos ejemplos:
+
+### DirectorRequest
+
+```php
+public function rules(): array
+{
+    return [
+        'name'         => ['required', 'string', 'min:3', 'max:30'],
+        'biography'    => ['required', 'string', 'min:3', 'max:2000'],
+        'image'        => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:4096'],
+        'birth_date'   => ['required', 'date', 'before:today', 'after:01-01-1890', 'date_format:d-m-Y'],
+        'nationality'  => ['required', 'string', 'max:50'],
+    ];
+}
+```
+
+### GenreRequest
+
+```php
+public function rules(): array
+{
+    return [
+        'name'        => ['required', 'string', 'min:6', 'max:30', Rule::unique('genres')->ignore($this->genre)],
+        'description' => ['required', 'string', 'min:6', 'max:255'],
+    ];
+}
+```
+
+### LoginRequest
+
+```php
+public function rules(): array
+{
+    return [
+        'email'    => ['required', 'string', 'email'],
+        'password' => ['required', 'string'],
+    ];
+}
+```
+
+### MovieRequest
+
+```php
+public function rules(): array
+{
+    return [
+        'title'       => ['required', 'string', 'min:6', 'max:60', Rule::unique('movies')->ignore($this->movie)],
+        'description' => ['required', 'string', 'min:10', 'max:1000'],
+        'cover_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+        'release_date'=> ['required', 'date', 'before:today', 'date_format:Y-m-d'],
+        'trailer_url' => ['required', 'url'],
+        'duration'    => ['required', 'integer'],
+    ];
+}
+```
+
+### ReviewRequest
+
+```php
+public function rules(): array
+{
+    return [
+        'content' => ['required', 'string', 'min:10', 'max:1000'],
+        'rating'  => ['required', 'numeric', 'min:1', 'max:5']
+    ];
+}
+```
+
+---
+
+## Recursos y Policies
+
+- **Resources:**  
+  Se utilizan Resources para formatear las respuestas de la API, asegurando una estructura consistente en los JSON devueltos.
+
+- **Policies:**  
+  Se implementan Policies para autorizar acciones en modelos, de forma que se pueda controlar qué usuarios pueden editar, eliminar o ver determinados recursos.
+
+---
+
+## Servicios Adicionales
+
+- **ImageService:**  
+  Un servicio dedicado a la manipulación y almacenamiento de imágenes, utilizado en endpoints que requieren subir imágenes (por ejemplo, en la creación de directores o películas).
+
+---
+
+## Roles de Usuario
+
+La API maneja diferentes roles de usuario, cada uno con distintos niveles de permisos:
+
+- **Admin:**  
+  Tiene acceso total a las funcionalidades de administración, incluyendo la gestión de roles, permisos y dashboard.
+
+- **Moderator:**  
+  Puede gestionar contenidos y revisar reseñas, dependiendo de las políticas definidas.
+
+- **Reviewer:**  
+  Puede crear y editar sus reseñas, y acceder a funcionalidades básicas de usuario.
+
+*La asignación y verificación de estos roles se realiza mediante middleware y policies, protegiendo las rutas sensibles.*
 
 ---
