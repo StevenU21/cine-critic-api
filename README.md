@@ -2,7 +2,7 @@
 
 # CineCritic-API
 
-Una API RESTful desarrollada en Laravel para la gestión de reseñas de películas, con autenticación utilizando Laravel Sanctum, control de roles de usuario (Admin, Moderator, Reviewer), manejo de excepciones personalizadas, uso de servicios, resources y policies, panel de administración con estadísticas, y gestión avanzada de roles y permisos.
+Una API RESTFULL desarrollada en Laravel para la gestión de reseñas de películas, con autenticación utilizando Laravel Sanctum, control de roles de usuario (Admin, Moderator, Reviewer), manejo de excepciones personalizadas, uso de servicios, resources y policies, panel de administración con estadísticas, y gestión avanzada de roles y permisos.
 
 ## Tabla de Contenidos
 
